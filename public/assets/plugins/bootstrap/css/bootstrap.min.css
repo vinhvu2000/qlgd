@@ -5770,12 +5770,18 @@ button.list-group-item-danger.active:hover {
 .panel-title > small > a {
   color: inherit;
 }
+.footer,
 .panel-footer {
   padding: 10px 15px;
   background-color: #f5f5f5;
   border-top: 1px solid #ddd;
   border-bottom-right-radius: 3px;
   border-bottom-left-radius: 3px;
+}
+.footer{
+  position:absolute;
+  width: 100%;
+  bottom: 0;
 }
 .panel > .list-group,
 .panel > .panel-collapse > .list-group {
