@@ -34,9 +34,9 @@
             <div class="form-group">
                 <div class="col-sm-2">
                     <select name="mtype" id="mtype" class="form-control">
-                        <option value='1'>Sinh viên</option>
-                        <option value='2'>Lớp môn học</option>
-                        <option value='3'>Lịch trình</option>
+                        <option value='1'>Tòa K</option>
+                        <option value='2'>Tòa C</option>
+                        <option value='3'>Tòa A</option>
                     </select>
                 </div>
                 <div class="col-sm-6"><input class="form-control" name="query" placeholder="Thông tin tra cứu"
