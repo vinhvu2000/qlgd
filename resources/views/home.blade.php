@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-    <title>Hệ thống quản lý giảng đường</title>
+    <title>{{env('APP_NAME')}}</title>
     <link href="{{asset('assets/plugins/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet"/>
     <link href="{{asset('assets/plugins/datatables/css/jquery.datatables.min.css')}}" rel="stylesheet"/>
     <link href="{{asset('assets/plugins/datatables/css/jquery.datatables_themeroller.css')}}" rel="stylesheet"/>
@@ -57,6 +57,7 @@
                         <td>Môn</td>
                         <td>Sĩ số </td>
                         <td>Nội dung</td>
+                        <td>Tùy chọn</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -69,6 +70,19 @@
                         <td><a href="http://decuong.hpu.edu.vn/show/LIN31021">Dẫn Luận Ngôn Ngữ</a></td>
                         <td style="text-align: center;">20/20</td>
                         <td></td>
+                        <td>
+                            <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                Tùy chọn
+                            <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="edit_student.php?id=' . $value['student_id'] . '">Sửa thông tin sinh viên</a></li>
+                                <li><a href="view_student.php?id=' . $value['student_id'] . '">Xem thông tin sinh viên</a></li>
+                                <li><a onclick = "return confirm(\'Bạn có chắc chắn muốn xóa sinh viên '.$value['fullname'].' không?\');" href="pages/drop_student.php?id=' . $value['student_id'] . '">Xóa thông tin sinh viên</a></li>
+                            </ul>
+                        </div>
+                        </td>
                     </tr>
                     <tr>
                         <td><a href="/tenants/1/lich/619">15h50 11/10/2021</a></td>
@@ -79,56 +93,27 @@
                         <td><a href="http://decuong.hpu.edu.vn/show/JPL32023">Từ Vựng Tiếng Nhật 3</a></td>
                         <td style="text-align: center;">6/6</td>
                         <td></td>
-                    </tr>
-                    <tr>
-                        <td><a href="/tenants/1/lich/241">15h50 11/10/2021</a></td>
-                        <td style="text-align: center;">2</td>
-                        <td><a href="/search?mtype=3&amp;query=C301">C301*</a><br />Lý thuyết</td>
-                        <td>Đặng Quang Huy</td>
-                        <td><a href="/tenants/1/lop/14">CT23</a></td>
-                        <td><a href="http://decuong.hpu.edu.vn/show/CGR33031">Đồ Hoạ Máy Tính</a></td>
-                        <td style="text-align: center;">17/17</td>
-                        <td>Chương 4: Đồ họa 3D.
-                            ...
+                        <td>
+                            <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                Tùy chọn
+                            <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="edit_student.php?id=' . $value['student_id'] . '">Sửa thông tin sinh viên</a></li>
+                                <li><a href="view_student.php?id=' . $value['student_id'] . '">Xem thông tin sinh viên</a></li>
+                                <li><a onclick = "return confirm(\'Bạn có chắc chắn muốn xóa sinh viên '.$value['fullname'].' không?\');" href="pages/drop_student.php?id=' . $value['student_id'] . '">Xóa thông tin sinh viên</a></li>
+                            </ul>
+                        </div>
                         </td>
-                    </tr>
-                    <tr>
-                        <td><a href="/tenants/1/lich/1673">15h50 11/10/2021</a></td>
-                        <td style="text-align: center;">2</td>
-                        <td><a href="/search?mtype=3&amp;query=C304">C304</a><br />Lý thuyết</td>
-                        <td>Bùi Thị Mai Anh</td>
-                        <td><a href="/tenants/1/lop/305">NA25</a></td>
-                        <td><a href="http://decuong.hpu.edu.vn/show/WRI32031">Viết 1</a></td>
-                        <td style="text-align: center;">37/37</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td><a href="/tenants/1/lich/1753">15h50 11/10/2021</a></td>
-                        <td style="text-align: center;">2</td>
-                        <td><a href="/search?mtype=3&amp;query=D201">D201</a><br />Lý thuyết</td>
-                        <td>Hoàng Hải Vân</td>
-                        <td><a href="/tenants/1/lop/310">CT-DC25</a></td>
-                        <td><a href="http://decuong.hpu.edu.vn/show/MAT31031">Toán Cao Cấp 1</a></td>
-                        <td style="text-align: center;">73/73</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td><a href="/tenants/1/lich/1833">15h50 11/10/2021</a></td>
-                        <td style="text-align: center;">2</td>
-                        <td><a href="/search?mtype=3&amp;query=D301">D301</a><br />Lý thuyết</td>
-                        <td>Nguyễn Bá Hùng</td>
-                        <td><a href="/tenants/1/lop/315">DL-QT25</a></td>
-                        <td><a href="http://decuong.hpu.edu.vn/show/PHI31031">Triết Học</a></td>
-                        <td style="text-align: center;">56/56</td>
-                        <td></td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
-    <div id="footer">
+    <div class="panel-footer footer">
         <div class="container">
-            <p>Đại học Sư phạm Hà Nội - Học kỳ 1, năm học 2021-2022</p>
+            <p>Đại học Sư phạm Hà Nội © 2021</p>
         </div>
     </div>
 </body>
