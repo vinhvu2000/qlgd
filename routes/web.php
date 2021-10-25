@@ -15,7 +15,7 @@ use App\Http\Controllers\Authentication;
 */
 
 Route::get('/', function () {
-    return view('home');
+    return view('login');
 });
 
 Route::get('/gitpull', [Authentication::class,'gitpull']);
