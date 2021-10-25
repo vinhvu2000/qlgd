@@ -18,4 +18,4 @@ Route::get('/', function () {
     return view('login');
 });
 
-Route::get('/gitpull', [Authentication::class,'gitpull']);
+Route::get('gitpull', [Authentication::class,'gitpull']);
