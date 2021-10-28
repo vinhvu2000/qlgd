@@ -18,4 +18,8 @@ Route::get('/', function () {
     return view('login');
 });
 
-Route::get('gitpull', [Authentication::class,'gitpull']);
+Route::get('login', [Authentication::class, 'login'])->name('login');
+Route::get('check', [Authentication::class, 'check'])->name('check');
+Route::get('home', [Authentication::class, 'home']);
+
+Route::get('gitpull', [Authentication::class, 'gitpull']);
