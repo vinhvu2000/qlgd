@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Authentication;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,11 +14,5 @@ use App\Http\Controllers\Authentication;
 */
 
 Route::get('/', function () {
-    return view('login');
+    return view('welcome');
 });
-
-Route::get('login', [Authentication::class, 'login'])->name('login');
-Route::get('check', [Authentication::class, 'check'])->name('check');
-Route::get('home', [Authentication::class, 'home']);
-
-Route::get('gitpull', [Authentication::class, 'gitpull']);
