@@ -28,7 +28,7 @@ class HomeController extends Controller
 
     public function gitpull()
     {
-        shell_exec('cd C:\xampp\htdocs\qlgd');
+        shell_exec('cd C:\\xampp\\htdocs\\qlgd');
         shell_exec('git pull');
         return view('home');
     }
