@@ -2,6 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
+use Illuminate\Routing\RouteGroup;
+use Illuminate\Support\Facades\Auth;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,10 +19,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+
+Route::middleware(['middleware' => 'preventBackHistory'])->group(function ()
+{
+    Auth::routes();
 });
 
-Auth::routes();
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/gitpull', [HomeController::class, 'gitpull'])->name('gitpull');
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::group(['prefix' => 'admin', 'middleware' => ['isAdmin', 'auth', 'preventBackHistory']], function ()
+{
+    Route::get('dashboard',[AdminController::class, 'index'])->name('admin.dashboard');
+});
+
+Route::group(['prefix' => 'user', 'middleware' => ['isUser', 'auth', 'preventBackHistory']], function ()
+{
+    Route::get('dashboard',[AdminController::class, 'index'])->name('user.dashboard');
+});

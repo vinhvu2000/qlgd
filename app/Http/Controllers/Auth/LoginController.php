@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
+
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -28,6 +31,17 @@ class LoginController extends Controller
      */
     protected $redirectTo = RouteServiceProvider::HOME;
 
+    protected function redirectTo()
+    {
+        if(Auth()->user()->role == "admin" || Auth()->user()->role == "superadmin")
+        {
+            return route('admin.dashboard');
+        }
+        elseif (Auth()->user()->role == "user") {
+            return route('user.dashboard');
+        }
+    }
+
     /**
      * Create a new controller instance.
      *
@@ -36,5 +50,25 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    public function login(Request $request)
+    {
+        $input = $request->all();
+        $this->validate($request,[
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
+        if ( auth()->attempt(['email' => $input['email'], 'password' => $input['password']])) {
+            if (auth()->user()->role == "admin" || auth()->user()->role == "superadmin" ) {
+                return redirect()->route('admin.dashboard');
+            }
+            elseif (auth()->user()->role == "user") {
+                return redirect()->route('user.dashboard');
+            }
+        }
+        else {
+            return redirect()->route('login')->with('error', 'Sai email hoặc mật khẩu');
+        }
     }
 }
