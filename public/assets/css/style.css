@@ -13,7 +13,7 @@
     --theme-secondary: #f73164;
 }
 .font-roboto {
-    font-family: Roboto, Rubik, Sans-serif;
+    font-family: Roboto, Pattaya;
 }
 .p-0 {
     padding: 0px;
@@ -2026,7 +2026,7 @@ button:focus {
 body {
     font-size: 14px;
     overflow-x: hidden;
-    font-family: Rubik, Sans-serif;
+    font-family: Pattaya;
     color: #2b2b2b;
 }
 ul {
@@ -7101,7 +7101,7 @@ table.dataTable.display tbody tr.odd > .sorting_1 {
     font-size: 80%;
 }
 .ui-front textarea {
-    font-family: Rubik, Sans-serif !important;
+    font-family: Pattaya !important;
 }
 .form-builder-2 .form-group .checkbox label {
     margin-top: 0;
@@ -7282,13 +7282,13 @@ table.dataTable.display tbody tr.odd > .sorting_1 {
 .icon-hover-bottom span,
 .icon-hover-bottom label,
 .icon-hover-bottom .btn {
-    font-family: Roboto, Rubik, Sans-serif;
+    font-family: Roboto, Pattaya;
 }
 .icon-hover-bottom .form-group input {
     display: inline-block;
     width: 300px;
     background-color: #fff;
-    font-family: Roboto, Rubik, Sans-serif;
+    font-family: Roboto, Pattaya;
 }
 .fa-fa-icon-show-div,
 .icons-show-div {
@@ -11644,7 +11644,7 @@ th {
     position: relative;
 }
 .bootstrap-touchspin .input-group {
-    font-family: Rubik, Sans-serif;
+    font-family: Pattaya;
 }
 .bootstrap-touchspin .input-group .btn {
     border-radius: 0 !important;
@@ -12858,7 +12858,7 @@ th {
     color: #898989;
     background: #fff;
     border: solid 1px #ecf3fa;
-    font-family: Rubik, Sans-serif;
+    font-family: Pattaya;
     font-size: 12px;
     text-align: center;
 }
@@ -12878,7 +12878,7 @@ th {
     background: rgba(49, 49, 49, 0.7);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000);
     color: #fff;
-    font: 10px Rubik, Sans-serif;
+    font: 10px Pattaya;
     text-align: left;
     white-space: nowrap;
     padding: 5px;
@@ -12890,7 +12890,7 @@ th {
 }
 .chart-sparkline .jqsfield {
     color: #fff;
-    font: 10px Rubik, Sans-serif;
+    font: 10px Pattaya;
     text-align: left;
 }
 .radial-bar {
@@ -13832,7 +13832,7 @@ p.data-attributes svg {
     font-weight: 500;
 }
 .list-persons p {
-    font-family: Roboto, Rubik, Sans-serif;
+    font-family: Roboto, Pattaya;
 }
 .list-persons .profile-mail {
     padding: 30px 0;
@@ -14031,7 +14031,7 @@ p.data-attributes svg {
 .negative-container .apexcharts-xaxis .apexcharts-xaxis-texts-g text {
     font-size: 13px;
     fill: rgba(43, 43, 43, 0.4);
-    font-family: Roboto, Rubik, Sans-serif !important;
+    font-family: Roboto, Pattaya !important;
 }
 .ecommerce-widgets {
     -webkit-box-align: center;
@@ -14323,7 +14323,7 @@ p.data-attributes svg {
 .offer-box .offer-slider .selling-slide p {
     color: rgba(255, 255, 255, 0.5);
     font-weight: 500;
-    font-family: Roboto, Rubik, Sans-serif;
+    font-family: Roboto, Pattaya;
     margin-bottom: 5px;
 }
 .offer-box .offer-slider .selling-slide .badge-white {
@@ -16030,7 +16030,7 @@ p.data-attributes svg {
 .news .news-update span,
 .appointment-sec .news-update span {
     color: rgba(43, 43, 43, 0.7);
-    font-family: Roboto, Rubik, Sans-serif;
+    font-family: Roboto, Pattaya;
     font-weight: 400;
 }
 .third-news-update .news-update:last-child,
@@ -24413,7 +24413,7 @@ footer {
     top: -5rem;
     left: 1.25rem;
     color: #2c323f;
-    font-family: Rubik, Sans-serif;
+    font-family: Pattaya;
     font-size: 22px;
 }
 .timeliny .timeliny-dot::after {
@@ -24617,7 +24617,7 @@ footer {
 .user-profile .follow .follow-num {
     font-size: 20px;
     color: #242934;
-    font-family: Rubik, Sans-serif;
+    font-family: Pattaya;
     font-weight: 500;
 }
 .user-profile .follow span {
@@ -24651,7 +24651,7 @@ footer {
     color: #dc3545;
 }
 .user-profile .like-comment span {
-    font-family: Rubik, Sans-serif;
+    font-family: Pattaya;
 }
 .user-profile .social-media a {
     padding: 0 15px;
@@ -38741,7 +38741,7 @@ body[class*="dark-"] .for-light {
     left: unset;
 }
 .icon-lists {
-    font-family: Rubik, Sans-serif;
+    font-family: Pattaya;
 }
 .pl-navs-inline {
     padding-left: 30px !important;
@@ -39356,7 +39356,7 @@ body[class*="dark-"] .for-light {
     padding: 2px 4px;
     font-size: 11px;
     font-weight: 700;
-    font-family: work-Sans, Rubik, Sans-serif;
+    font-family: work-Sans, Pattaya;
 }
 .page-wrapper .page-header .header-wrapper .nav-right > ul > li span ul {
     left: inherit;
@@ -39946,7 +39946,7 @@ body[class*="dark-"] .for-light {
 .page-wrapper .page-body-wrapper .page-title .breadcrumb li {
     font-size: 13px;
     letter-spacing: 1px;
-    font-family: Roboto, Rubik, Sans-serif;
+    font-family: Roboto, Pattaya;
 }
 .page-wrapper
     .page-body-wrapper

@@ -390,6 +390,7 @@ Route::prefix('others')->group(function () {
 Route::group(['prefix' => 'admin', 'middleware' => ['isAdmin', 'auth', 'preventBackHistory']], function ()
 {
     Route::get('user',[AdminController::class, 'user'])->name('admin.user')->middleware('isSuperAdmin');
+
     Route::get('dashboard',[AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('chat',[AdminController::class, 'chat'])->name('admin.chat');
     Route::get('room',[AdminController::class, 'room'])->name('admin.room');
