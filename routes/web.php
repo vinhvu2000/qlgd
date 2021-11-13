@@ -395,6 +395,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['isAdmin', 'auth', 'preventB
     Route::get('chat',[AdminController::class, 'chat'])->name('admin.chat');
     Route::get('room',[AdminController::class, 'room'])->name('admin.room');
     Route::get('device',[AdminController::class, 'device'])->name('admin.device');
+    Route::get('support',[AdminController::class, 'support'])->name('admin.support');
+    Route::get('settings',[AdminController::class, 'settings'])->name('admin.settings');
 });
 
 Route::group(['prefix' => 'user', 'middleware' => ['isUser', 'auth', 'preventBackHistory']], function ()

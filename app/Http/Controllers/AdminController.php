@@ -33,4 +33,14 @@ class AdminController extends Controller
     {
         return view('admin.user');
     }
+
+    public function support()
+    {
+        return view('admin.support');
+    }
+
+    public function settings()
+    {
+        return view('admin.settings');
+    }
 }
