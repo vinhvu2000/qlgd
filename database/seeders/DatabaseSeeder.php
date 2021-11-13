@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
             'name' => "Quản trị hệ thống",
             'email' => "superadmin@hnue.edu.vn",
             'password' => Hash::make('12345678'),
-            'role' => "supderadmin"
+            'role' => "superadmin"
         ]);
         DB::table('users')->insert([
             'name' => "Quản lí nhà C",
