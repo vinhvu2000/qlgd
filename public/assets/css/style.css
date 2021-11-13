@@ -40756,7 +40756,7 @@ body[class*="dark-"] .for-light {
     .page-body-wrapper
     div.sidebar-wrapper
     .logo-icon-wrapper {
-    padding: 27px 30px;
+    padding: 27px 15px;
     -webkit-box-shadow: -9px 0 20px rgba(89, 102, 122, 0.1);
     box-shadow: -9px 0 20px rgba(89, 102, 122, 0.1);
 }
