@@ -15,11 +15,11 @@
 						<div class="mobile-back text-end"><span>Quay lại</span><i class="fa fa-angle-right ps-2" aria-hidden="true"></i></div>
 					</li>
 					<li class="sidebar-list">
-						<a class="sidebar-link sidebar-title {{Route::currentRouteName() == 'admin.dashboard' ? 'active' : '' }}" href="#"><i data-feather="home"></i><span class="lan-3">Trang chủ</span>
+						<a class="sidebar-link sidebar-title {{Route::currentRouteName() == 'admin.dashboard' ? 'active' : '' }}" href="{{ route('admin.dashboard') }}"><i data-feather="home"></i><span class="lan-3">Trang chủ</span>
 						</a>
 					</li>
 					<li class="sidebar-list">
-						<a class="sidebar-link sidebar-title {{Route::currentRouteName() == 'admin.room' ? 'active' : '' }}" href="#">
+						<a class="sidebar-link sidebar-title {{Route::currentRouteName() == 'admin.room' ? 'active' : '' }}" href="{{ route('admin.room') }}">
 							<i data-feather="box"></i><span>Quản lí phòng học</span>
 							<div class="according-menu"><i class="fa fa-angle-{{request()->route()->getPrefix() == '/admin/room' ? 'down' : 'right' }}"></i></div>
 						</a>
@@ -30,7 +30,7 @@
 		                </ul>
 					</li>
 					<li class="sidebar-list">
-						<a class="sidebar-link sidebar-title {{Route::currentRouteName() == 'admin.device' ? 'active' : '' }}" href="#">
+						<a class="sidebar-link sidebar-title {{Route::currentRouteName() == 'admin.device' ? 'active' : '' }}" href="{{ route('admin.device') }}">
 							<i data-feather="monitor"></i><span>Quản lí thiết bị</span>
 							<div class="according-menu"><i class="fa fa-angle-{{request()->route()->getPrefix() == '/admin/device' ? 'down' : 'right' }}"></i></div>
 						</a>
@@ -47,12 +47,12 @@
 					</li>
 					@endif
 					<li class="sidebar-list">
-						<a class="sidebar-link sidebar-title {{request()->route()->getPrefix() == '/chat' ? 'active' : '' }}" href="#">
+						<a class="sidebar-link sidebar-title {{Route::currentRouteName() == 'admin.chat' ? 'active' : '' }}" href="{{ route('admin.chat') }}">
 							<i data-feather="message-circle"></i><span>Hộp thư</span>
 						</a>
 					</li>
-					 <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav {{ Route::currentRouteName()=='admin.support' ? 'active' : '' }}" href="#"><i data-feather="help-circle"> </i><span>Hỗ trợ</span></a></li>
-					 <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav {{ Route::currentRouteName()=='admin.settings' ? 'active' : '' }}" href="#"><i data-feather="settings"> </i><span>Cài đặt</span></a></li>
+					 <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav {{ Route::currentRouteName()=='admin.support' ? 'active' : '' }}" href="{{ route('admin.support') }}"><i data-feather="help-circle"> </i><span>Hỗ trợ</span></a></li>
+					 <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav {{ Route::currentRouteName()=='admin.settings' ? 'active' : '' }}" href="{{ route('admin.settings') }}"><i data-feather="settings"> </i><span>Cài đặt</span></a></li>
 					 <li class="sidebar-list">
 						 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
 						@csrf
