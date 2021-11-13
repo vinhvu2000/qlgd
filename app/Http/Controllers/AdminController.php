@@ -9,10 +9,26 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
-    public function index()
+    public function dashboard()
     {
-        return view('admin.index');
+        return view('admin.dashboard');
     }
+
+    public function room()
+    {
+        return view('admin.room');
+    }
+
+    public function device()
+    {
+        return view('admin.device');
+    }
+
+    public function chat()
+    {
+        return view('admin.chat');
+    }
+
     public function user()
     {
         return view('admin.user');
