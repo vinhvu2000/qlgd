@@ -376,7 +376,6 @@ Route::middleware(['middleware' => 'preventBackHistory'])->group(function ()
 });
 
 Route::get('/', [HomeController::class, 'index'])->name('/');
-Route::get('/', [HomeController::class, 'index'])->name('/');
 Route::get('/gitpull', [HomeController::class, 'gitpull'])->name('gitpull');
 
 Route::prefix('others')->group(function () {
