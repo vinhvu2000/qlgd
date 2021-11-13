@@ -390,6 +390,7 @@ Route::prefix('others')->group(function () {
 Route::group(['prefix' => 'admin', 'middleware' => ['isAdmin', 'auth', 'preventBackHistory']], function ()
 {
     Route::get('dashboard',[AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('user',[AdminController::class, 'user'])->name('admin.user')->middleware('isSuperAdmin');
 });
 
 Route::group(['prefix' => 'user', 'middleware' => ['isUser', 'auth', 'preventBackHistory']], function ()

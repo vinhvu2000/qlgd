@@ -24,6 +24,7 @@
 							<div class="according-menu"><i class="fa fa-angle-{{request()->route()->getPrefix() == '/admin/room' ? 'down' : 'right' }}"></i></div>
 						</a>
 						<ul class="sidebar-submenu" style="display: {{ Route::currentRouteName() == 'admin.room' ? 'block;' : 'none;' }}">
+		                    <li><a href="#" class="{{ Route::currentRouteName()=='admin.room.view' ? 'active' : '' }}">Xem lịch</a></li>
 		                    <li><a href="#" class="{{ Route::currentRouteName()=='admin.room.add' ? 'active' : '' }}">Thêm phòng</a></li>
 		                    <li><a href="#" class="{{ Route::currentRouteName()=='admin.room.edit' ? 'active' : '' }}">Sửa phòng</a></li>
 		                </ul>
@@ -40,14 +41,9 @@
 					</li>
 					@if (Auth::user()->role == "superadmin")
 					<li class="sidebar-list">
-						<a class="sidebar-link sidebar-title {{Route::currentRouteName() == 'admin.user' ? 'active' : '' }}" href="#">
+						<a class="sidebar-link sidebar-title {{Route::currentRouteName() == 'admin.user' ? 'active' : '' }}" href="{{ route('admin.user') }}">
 							<i data-feather="users"></i><span>Quản lí người dùng</span>
-							<div class="according-menu"><i class="fa fa-angle-{{request()->route()->getPrefix() == '/admin/user' ? 'down' : 'right' }}"></i></div>
 						</a>
-						<ul class="sidebar-submenu" style="display: {{ Route::currentRouteName() == 'admin.user' ? 'block;' : 'none;' }}">
-		                    <li><a href="#" class="{{ Route::currentRouteName()=='admin.user.add' ? 'active' : '' }}">Thêm người dùng</a></li>
-		                    <li><a href="#" class="{{ Route::currentRouteName()=='admin.user.edit' ? 'active' : '' }}">Sửa người dùng</a></li>
-		                </ul>
 					</li>
 					@endif
 					<li class="sidebar-list">
