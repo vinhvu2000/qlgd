@@ -357,7 +357,7 @@ Route::get('layout-{light}', function($light){
     {
         return redirect()->route('pages-vertical-layout');
     }
-    return redirect()->route('index');
+    return redirect()->route('dashboard');
     return 1;
 });
 Route::get('/clear-cache', function() {
@@ -389,8 +389,11 @@ Route::prefix('others')->group(function () {
 
 Route::group(['prefix' => 'admin', 'middleware' => ['isAdmin', 'auth', 'preventBackHistory']], function ()
 {
-    Route::get('dashboard',[AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('user',[AdminController::class, 'user'])->name('admin.user')->middleware('isSuperAdmin');
+    Route::get('dashboard',[AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('chat',[AdminController::class, 'chat'])->name('admin.chat');
+    Route::get('room',[AdminController::class, 'room'])->name('admin.room');
+    Route::get('device',[AdminController::class, 'device'])->name('admin.device');
 });
 
 Route::group(['prefix' => 'user', 'middleware' => ['isUser', 'auth', 'preventBackHistory']], function ()

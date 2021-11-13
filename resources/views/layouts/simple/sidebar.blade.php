@@ -15,7 +15,7 @@
 						<div class="mobile-back text-end"><span>Quay lại</span><i class="fa fa-angle-right ps-2" aria-hidden="true"></i></div>
 					</li>
 					<li class="sidebar-list">
-						<a class="sidebar-link sidebar-title {{Route::currentRouteName() == 'admin.dashboard' ? 'active' : '' }}" href="#"><i data-feather="home"></i><span class="lan-3">Trang chủ</span>
+						<a class="sidebar-link sidebar-title {{Route::currentRouteName() == 'admin.dashboard' ? 'active' : '' }}" href="{{ route('admin.dashboard') }}"><i data-feather="home"></i><span class="lan-3">Trang chủ</span>
 						</a>
 					</li>
 					<li class="sidebar-list">
@@ -47,7 +47,7 @@
 					</li>
 					@endif
 					<li class="sidebar-list">
-						<a class="sidebar-link sidebar-title {{request()->route()->getPrefix() == '/chat' ? 'active' : '' }}" href="#">
+						<a class="sidebar-link sidebar-title {{Route::currentRouteName() == 'admin.chat' ? 'active' : '' }}" href="{{ route('admin.chat') }}">
 							<i data-feather="message-circle"></i><span>Hộp thư</span>
 						</a>
 					</li>
