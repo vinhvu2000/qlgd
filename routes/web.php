@@ -401,5 +401,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['isAdmin', 'auth', 'preventB
 
 Route::group(['prefix' => 'user', 'middleware' => ['isUser', 'auth', 'preventBackHistory']], function ()
 {
-    Route::get('dashboard',[AdminController::class, 'index'])->name('user.dashboard');
+
+    Route::get('dashboard',[AdminController::class, 'dashboard'])->name('user.dashboard');
+
 });

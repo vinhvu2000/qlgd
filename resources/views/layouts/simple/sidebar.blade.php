@@ -21,23 +21,12 @@
 					<li class="sidebar-list">
 						<a class="sidebar-link sidebar-title {{Route::currentRouteName() == 'admin.room' ? 'active' : '' }}" href="{{ route('admin.room') }}">
 							<i data-feather="box"></i><span>Quản lí phòng học</span>
-							<div class="according-menu"><i class="fa fa-angle-{{request()->route()->getPrefix() == '/admin/room' ? 'down' : 'right' }}"></i></div>
 						</a>
-						<ul class="sidebar-submenu" style="display: {{ Route::currentRouteName() == 'admin.room' ? 'block;' : 'none;' }}">
-		                    <li><a href="#" class="{{ Route::currentRouteName()=='admin.room.view' ? 'active' : '' }}">Xem lịch</a></li>
-		                    <li><a href="#" class="{{ Route::currentRouteName()=='admin.room.add' ? 'active' : '' }}">Thêm phòng</a></li>
-		                    <li><a href="#" class="{{ Route::currentRouteName()=='admin.room.edit' ? 'active' : '' }}">Sửa phòng</a></li>
-		                </ul>
 					</li>
 					<li class="sidebar-list">
 						<a class="sidebar-link sidebar-title {{Route::currentRouteName() == 'admin.device' ? 'active' : '' }}" href="{{ route('admin.device') }}">
 							<i data-feather="monitor"></i><span>Quản lí thiết bị</span>
-							<div class="according-menu"><i class="fa fa-angle-{{request()->route()->getPrefix() == '/admin/device' ? 'down' : 'right' }}"></i></div>
 						</a>
-						<ul class="sidebar-submenu" style="display: {{ Route::currentRouteName() == 'admin.device' ? 'block;' : 'none;' }}">
-		                    <li><a href="#" class="{{ Route::currentRouteName()=='admin.device.add' ? 'active' : '' }}">Thêm thiết bị</a></li>
-		                    <li><a href="#" class="{{ Route::currentRouteName()=='admin.device.edit' ? 'active' : '' }}">Sửa thiết bị</a></li>
-		                </ul>
 					</li>
 					@if (Auth::user()->role == "superadmin")
 					<li class="sidebar-list">
