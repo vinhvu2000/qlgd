@@ -397,6 +397,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['isAdmin', 'auth', 'preventB
     Route::get('device',[AdminController::class, 'device'])->name('admin.device');
     Route::get('support',[AdminController::class, 'support'])->name('admin.support');
     Route::get('settings',[AdminController::class, 'settings'])->name('admin.settings');
+
+    //Datatable
+    Route::get('tableUser',[AdminController::class, 'tableUser'])->name('admin.tableUser');
 });
 
 Route::group(['prefix' => 'user', 'middleware' => ['isUser', 'auth', 'preventBackHistory']], function ()

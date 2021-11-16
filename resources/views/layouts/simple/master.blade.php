@@ -43,12 +43,12 @@
           <div class="container-fluid">        
             <div class="page-title">
               <div class="row">
-                <div class="col-6">
+                {{-- <div class="col-6">
                   @yield('breadcrumb-title')
-                </div>
+                </div> --}}
                 <div class="col-6">
                   <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('/') }}"> <i data-feather="home"></i></a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"> <i data-feather="home"></i></a></li>
                     @yield('breadcrumb-items')
                   </ol>
                 </div>

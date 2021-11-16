@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -29,9 +31,22 @@ class AdminController extends Controller
         return view('admin.chat');
     }
 
-    public function user()
+    public function user(Request $request)
     {
-        return view('admin.user');
+        if($request->ajax()){
+            $data = User::select('id', 'name', 'email', 'role')->get();
+            return Datatables::of($data)->addColumn('action', function ($row) {
+                                            $deletebtn = '<a class="btn btn-primary btn-sm" href=""><i class="fa fa-pencil"></i></a> <a class="btn btn-secondary btn-sm" href=""><i class="fa fa-trash-o"></i></a>';
+                                            return $deletebtn;
+                                            })
+                                        ->rawColumns(['action'])
+                                        ->make(true);
+        }
+        if (view()->exists('admin.user')) {
+            return view('admin.user');
+         }
+    
+        return abort('404');
     }
 
     public function support()
@@ -42,5 +57,10 @@ class AdminController extends Controller
     public function settings()
     {
         return view('admin.settings');
+    }
+
+    public function tableUser()
+    {
+        
     }
 }
