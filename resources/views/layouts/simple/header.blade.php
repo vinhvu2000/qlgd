@@ -94,7 +94,7 @@
         <li class="maximize"><a class="text-dark" href="#!" onclick="javascript:toggleFullScreen()"><i data-feather="maximize"></i></a></li>
         <li class="profile-nav onhover-dropdown p-0 me-0">
           <div class="media profile-media">
-            <img class="b-r-10" src="{{asset('assets/images/dashboard/profile.jpg')}}" alt="">
+            <img class="b-r-10" src="{{asset(Auth::user()->avatar)}}" alt="">
             <div class="media-body">
               <span>{{Auth::user()->name}}</span>
               <p class="mb-0 font-roboto">{{Auth::user()->email}}</i></p>

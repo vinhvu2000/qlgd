@@ -21,19 +21,22 @@ class DatabaseSeeder extends Seeder
             'name' => "Quản trị hệ thống",
             'email' => "superadmin@hnue.edu.vn",
             'password' => Hash::make('12345678'),
-            'role' => "superadmin"
+            'role' => "superadmin",
+            'avatar' => 'assets/images/avatar/user.png'
         ]);
         DB::table('users')->insert([
             'name' => "Quản lí nhà C",
             'email' => "adminC@hnue.edu.vn",
             'password' => Hash::make('12345678'),
-            'role' => "admin"
+            'role' => "admin",
+            'avatar' => 'assets/images/avatar/user.png'
         ]);
         DB::table('users')->insert([
             'name' => "K68D CNTT",
             'email' => "K68DCNTT@hnue.edu.vn",
             'password' => Hash::make('12345678'),
-            'role' => "user"
+            'role' => "user",
+            'avatar' => 'assets/images/avatar/user.png'
         ]);
     }
 }

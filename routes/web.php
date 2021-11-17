@@ -398,8 +398,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['isAdmin', 'auth', 'preventB
     Route::get('support',[AdminController::class, 'support'])->name('admin.support');
     Route::get('settings',[AdminController::class, 'settings'])->name('admin.settings');
 
-    //Datatable
-    Route::get('tableUser',[AdminController::class, 'tableUser'])->name('admin.tableUser');
+    //Quản lí tài khoản
+    Route::post('addUser',[AdminController::class, 'addUser'])->name('admin.addUser');
+    Route::post('editUser/{id}',[AdminController::class, 'editUser'])->name('admin.editUser');
+    Route::post('deleteUser/{id}',[AdminController::class, 'deleteUser'])->name('admin.deleteUser');
+    
 });
 
 Route::group(['prefix' => 'user', 'middleware' => ['isUser', 'auth', 'preventBackHistory']], function ()
