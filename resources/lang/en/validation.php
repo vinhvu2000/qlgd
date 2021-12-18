@@ -148,6 +148,7 @@ return [
             'gt' => 'Số phòng đích phải lớn hơn số phòng bắt đầu'
         ],
         'roomID' => [
+            'numeric' => 'Số phòng :input không hợp lệ',
             'unique' => 'Phòng :input đã tồn tại'
         ]
     ],

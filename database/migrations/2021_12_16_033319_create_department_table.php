@@ -14,10 +14,10 @@ class CreateDepartmentTable extends Migration
     public function up()
     {
         Schema::create('department', function (Blueprint $table) {
-            $table->id();
-            $table->string('departmentID');
+            $table->string('departmentID')->primary();
             $table->string('departmentName');
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable();
         });
     }
 

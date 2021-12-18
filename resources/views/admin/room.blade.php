@@ -236,11 +236,12 @@
 				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 			},
 			success: function(data){
-				swal("Thêm tài khoản thành công", {icon: "success",});
+				swal("Thêm phòng học thành công", {icon: "success",});
 				table.ajax.reload();
 			},
 			error: function (data) {
 				var error = data.responseJSON;
+				console.log(error);
 				swal(Object.values(error)[0][0], {icon: "error",});
 			}
 		})

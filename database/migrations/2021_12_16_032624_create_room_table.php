@@ -15,11 +15,12 @@ class CreateRoomTable extends Migration
     {
         Schema::create('room', function (Blueprint $table) {
             $table->id();
-            $table->string('roomID');
             $table->string('buildingID');
-            $table->string('status');
+            $table->string('roomID');
+            $table->string('status')->default('Đang hoạt động');
             $table->string('note')->nullable();
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable();
 
             $table->unique(['roomID','buildingID']);
             $table->foreign('buildingID')->references('buildingID')->on('building');

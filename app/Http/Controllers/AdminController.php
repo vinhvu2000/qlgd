@@ -15,6 +15,8 @@ use App\Imports\UsersImport;
 use App\Models\Building;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+
 
 class AdminController extends Controller
 {
@@ -28,7 +30,7 @@ class AdminController extends Controller
         
         if($request->ajax()){
             $buildingID = $request->buildingID == "ng" ? "%%" : $request->buildingID;
-            $data = Room::select('id', 'roomID', 'buildingID', 'status', 'note')->where('buildingID', 'like' ,$buildingID)->get();
+            $data = Room::select('id','roomID', 'buildingID', 'status', 'note')->where('buildingID', 'like' ,$buildingID)->get();
             return Datatables::of($data)->editColumn('roomID', '{{$buildingID}}-{{$roomID}}')
                                         ->addColumn('action', function ($row) {
                                             $actionBtn = '<button class="btn btn-success btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" ><i class="fa fa-pencil"></i></button>
@@ -145,27 +147,23 @@ class AdminController extends Controller
                     'status' => "Đang hoạt động"
                 ];
                 $validator = Validator::make($value, [
-                    'roomID' => ['unique'],
+                    'roomID' => ['required', 'numeric', 'unique:room,roomID,NULL,buildingID'.$data['buildingID']]
                 ]);
                 if($validator->fails()){
                     return response()->json($validator->errors(), 422);
                 }
+                Room::create($value);
             }
         }
-        echo '<pre>';
-        var_dump($data);
-        echo '</pre>';
-        die();
-        $data['password'] = "12345678";
-        $validator = Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8'],
-        ]);
-        if($validator->fails()){
-            return response()->json($validator->errors(), 422);
+        else{
+            $validator = Validator::make($data, [
+                'roomID' => ['required', 'numeric', 'unique:room,roomID,NULL,buildingID'.$data['buildingID']]
+            ]);
+            if($validator->fails()){
+                return response()->json($validator->errors(), 422);
+            }
+            Room::create($data);
         }
-        User::create($data);
         return response()->json('success', 200);
     }
 

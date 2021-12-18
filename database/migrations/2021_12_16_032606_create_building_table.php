@@ -14,11 +14,11 @@ class CreateBuildingTable extends Migration
     public function up()
     {
         Schema::create('building', function (Blueprint $table) {
-            $table->id();
-            $table->string('buildingID')->unique();
+            $table->string('buildingID')->primary();
             $table->string('status');
             $table->string('note')->nullable();
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable();
         });
     }
 
