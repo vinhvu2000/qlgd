@@ -369,7 +369,11 @@ Route::get('/clear-cache', function() {
     return "Cache is cleared";
 })->name('clear.cache');
 
+
+//---------------------------------------------------------------------------------------
 //QLGD's Route
+//---------------------------------------------------------------------------------------
+Auth::routes();
 Route::middleware(['middleware' => 'preventBackHistory'])->group(function ()
 {
     Auth::routes();
@@ -400,8 +404,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['isAdmin', 'auth', 'preventB
 
     //Quản lí tài khoản
     Route::post('addUser',[AdminController::class, 'addUser'])->name('admin.addUser');
-    Route::post('editUser/{id}',[AdminController::class, 'editUser'])->name('admin.editUser');
+    Route::post('editUser',[AdminController::class, 'editUser'])->name('admin.editUser');
     Route::post('deleteUser/{id}',[AdminController::class, 'deleteUser'])->name('admin.deleteUser');
+
+    //Quản lí phòng học
+    Route::post('addRoom',[AdminController::class, 'addRoom'])->name('admin.addRoom');
+    Route::post('editRoom',[AdminController::class, 'editRoom'])->name('admin.editRoom');
+    Route::post('deleteRoom/{id}',[AdminController::class, 'deleteRoom'])->name('admin.deleteRoom');
     
 });
 
