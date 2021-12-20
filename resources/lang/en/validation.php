@@ -137,6 +137,9 @@ return [
     */
 
     'custom' => [
+        'name' => [
+            'gt' => 'Độ dài tên không được lớn hơn 100',
+        ],
         'email' => [
             'unique' => 'Địa chỉ email :input đã tồn tại',
         ],
