@@ -137,9 +137,20 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'email' => [
+            'unique' => 'Địa chỉ email :input đã tồn tại',
         ],
+        'roomIDfrom' => [
+            'numeric' => 'Số phòng bắt đầu :input không hợp lệ',
+        ],
+        'roomIDto' => [
+            'numeric' => 'Số phòng đích :input không hợp lệ',
+            'gt' => 'Số phòng đích phải lớn hơn số phòng bắt đầu'
+        ],
+        'roomID' => [
+            'numeric' => 'Số phòng :input không hợp lệ',
+            'unique' => 'Phòng :input đã tồn tại'
+        ]
     ],
 
     /*

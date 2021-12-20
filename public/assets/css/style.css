@@ -4093,7 +4093,6 @@ strong ~ p {
 .card .card-header h5:not(.mb-0),
 .card .card-header h5:not(.m-0) {
     margin-bottom: 0;
-    text-transform: capitalize;
 }
 .card .card-header > span {
     font-size: 12px;
