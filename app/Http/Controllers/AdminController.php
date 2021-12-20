@@ -16,6 +16,7 @@ use App\Models\Building;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Carbon\Carbon;
 
 
 class AdminController extends Controller
@@ -30,8 +31,10 @@ class AdminController extends Controller
         
         if($request->ajax()){
             $buildingID = $request->buildingID == "ng" ? "%%" : $request->buildingID;
-            $data = Room::select('id','roomID', 'buildingID', 'status', 'note')->where('buildingID', 'like' ,$buildingID)->get();
+            $data = Room::where('buildingID', 'like' ,$buildingID)->get();
             return Datatables::of($data)->editColumn('roomID', '{{$buildingID}}-{{$roomID}}')
+                                        ->editColumn('created_at', '{{date("Y-m-d H:i:s", strtotime($created_at))}}')
+                                        ->editColumn('updated_at', '{{ $updated_at == ""?"":date("Y-m-d H:i:s", strtotime($updated_at)) }}')
                                         ->addColumn('action', function ($row) {
                                             $actionBtn = '<button class="btn btn-success btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" ><i class="fa fa-pencil"></i></button>
 					                        <button class="btn btn-secondary btn-sm sweet-5" type="button" onclick="deleteRoom(this)"><i class="fa fa-trash-o"></i></button>

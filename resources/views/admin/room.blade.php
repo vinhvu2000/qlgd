@@ -35,6 +35,8 @@
 								<th>Phòng học</th>
 								<th>Trạng thái</th>
 								<th>Ghi chú</th>
+								<th>Ngày tạo</th>
+								<th>Ngày cập nhật</th>
 								<th>Hành động</th>
 							</tr>
 						</thead>
@@ -191,6 +193,8 @@
 			{data: 'roomID', name: 'roomID'},
 			{data: 'status', name: 'status'},
 			{data: 'note', name: 'note'},
+			{data: 'created_at', name: 'created_at'},
+			{data: 'updated_at', name: 'updated_at'},
 			{data: 'action', name: 'action', orderable: false, searchable: false}]
 	});
 
