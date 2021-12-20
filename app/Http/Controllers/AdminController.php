@@ -96,8 +96,8 @@ class AdminController extends Controller
         else{
             $data = $request->input();
             $validator = Validator::make($data, [
-                'name' => ['required', 'string', 'max:255'],
-                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'name' => ['required', 'string', 'max:100'],
+                'email' => ['required', 'string', 'email', 'max:100', 'unique:users'],
             ]);
             if($validator->fails()){
                 return response()->json($validator->errors(), 422);
@@ -140,7 +140,7 @@ class AdminController extends Controller
             if($validator->fails()){
                 return response()->json($validator->errors(), 422);
             }
-            for ($i=$from; $i < $to; $i++) { 
+            for ($i=$from; $i <= $to; $i++) { 
                 $value = [
                     'roomID' => $i,
                     'buildingID' => $data['buildingID'],
