@@ -11,5 +11,5 @@ class Device extends Model
     protected $table = "device";
     public $incrementing = true;
     public $timestamps = true;
-    protected $fillable = ['deviceID', 'roomID', 'buildingID', 'status', 'note']; 
+    protected $fillable = ['deviceID', 'deviceName', 'roomID', 'buildingID', 'status', 'note']; 
 }

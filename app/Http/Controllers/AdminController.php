@@ -216,14 +216,21 @@ class AdminController extends Controller
     //Quản lí thiết bị
     public function addDevice(Request $request)
     {
-        $data = $request->input();
+        $data = [
+            'roomID' => substr($request->roomID,strpos($request->roomID,"-")+1),
+            'buildingID' => substr($request->roomID,0,strpos($request->roomID,"-")),
+            'deviceID' => $request->deviceID,
+            'deviceName' => $request->deviceName
+        ];
         $validator = Validator::make($data, [
-            'deviceID' => ['required', 'unique:device'],
-            'deviceName' => ['required', 'lt:100']
+            'deviceID' => ['required', 'string', 'unique:device'],
+            'deviceName' => ['required', 'string', 'max:100'],
         ]);
         if($validator->fails()){
             return response()->json($validator->errors(), 422);
         }
+        Device::create($data);
+        return response()->json('success', 200);
     }
 
     public function editDevice(Request $request)
