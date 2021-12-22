@@ -34,8 +34,9 @@
 								<th>STT</th>
 								<th>Mã thiết bị</th>
 								<th>Tên thiết bị</th>
-								<th>Mã phòng</th>
+								<th>Phòng học</th>
 								<th>Trạng thái</th>
+								<th>Ghi chú</th>
 								<th>Ngày mua</th>
 								<th>Ngày cập nhật</th>
 								<th>Hành động</th>
@@ -104,9 +105,9 @@
 								<div class="input-group">
 									<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Mã toà</span></div>
 									<select name="buildingID" class="form-control btn-square">
-										@foreach($buildingID as $key => $value)
+										{{-- @foreach($buildingID as $key => $value)
 										<option value="{{$value['buildingID']}}">{{$value['buildingID']}}</option>
-										@endforeach
+										@endforeach --}}
 									</select>
 								</div>
 							</div>
@@ -149,12 +150,12 @@
 <script src="{{asset('assets/js/datatable/datatables/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('assets/js/sweet-alert/sweetalert.min.js')}}"></script>
 {{-- <script src="{{asset('assets/js/sweet-alert/app.js')}}"></script> --}}
-{{-- <script>
+<script>
 	function deleteRoom(t) {
 		var tbody = $(t).parent().parent();
 		swal({
 			title: "Bạn có chắc chắn không?",
-			text: "Hành động này sẽ xóa phòng "+tbody.find("td:nth-child(2)").text()+" vĩnh viễn",
+			text: "Hành động này sẽ xóa thiết bị "+tbody.find("td:nth-child(2)").text()+" vĩnh viễn",
 			icon: "warning",
 			buttons: true,
 			dangerMode: true,
@@ -162,13 +163,13 @@
 			if (willDelete) {
 				var text = tbody.find("td:nth-child(2)").text()
 				$.ajax({
-				url: 'deleteRoom/'+text,
+				url: 'deleteDevice/'+text,
 				type: 'POST',
 				headers: {
 					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 				},
 				success: function(data){
-					swal("Phòng học "+tbody.find("td:nth-child(2)").text()+" đã bị xóa", {
+					swal("Thiết bị "+tbody.find("td:nth-child(2)").text()+" đã bị xóa", {
 					icon: "success",
 					});
 				}
@@ -186,11 +187,13 @@
 		serverSide: true,
 		scrollX: true,
 		ajax: {
-			url: "{{ route('admin.room') }}",
+			url: "{{ route('admin.device') }}",
 			data: {"buildingID": $(".profile-nav .media-body span").text().substring($(".profile-nav .media-body span").text().length-2).trim()},
 		},
 		columns: [
 			{data: 'id', name: 'id'},
+			{data: 'deviceID', name: 'deviceID'},
+			{data: 'deviceName', name: 'deviceName'},
 			{data: 'roomID', name: 'roomID'},
 			{data: 'status', name: 'status'},
 			{data: 'note', name: 'note'},
@@ -252,5 +255,5 @@
 		})
 	})
 	
-</script> --}}
+</script>
 @endsection

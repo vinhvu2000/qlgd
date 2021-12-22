@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Device extends Model
 {
     use HasFactory;
-    protected $table = "devices";
+    protected $table = "device";
     public $incrementing = true;
     public $timestamps = true;
     protected $fillable = ['deviceID', 'buildingID', 'status', 'note']; 

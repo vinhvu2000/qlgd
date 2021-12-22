@@ -411,6 +411,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['isAdmin', 'auth', 'preventB
     Route::post('addRoom',[AdminController::class, 'addRoom'])->name('admin.addRoom');
     Route::post('editRoom',[AdminController::class, 'editRoom'])->name('admin.editRoom');
     Route::post('deleteRoom/{id}',[AdminController::class, 'deleteRoom'])->name('admin.deleteRoom');
+
+    //Quản lí thiết bị
+    Route::post('addRoom',[AdminController::class, 'addRoom'])->name('admin.addRoom');
+    Route::post('editRoom',[AdminController::class, 'editRoom'])->name('admin.editRoom');
+    Route::post('deleteRoom/{id}',[AdminController::class, 'deleteRoom'])->name('admin.deleteRoom');
     
 });
 

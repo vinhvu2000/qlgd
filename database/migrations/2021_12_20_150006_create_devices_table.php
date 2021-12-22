@@ -13,10 +13,19 @@ class CreateDevicesTable extends Migration
      */
     public function up()
     {
-        Schema::create('devices', function (Blueprint $table) {
+        Schema::create('device', function (Blueprint $table) {
             $table->id();
-            $table->string("")
-            $table->timestamps();
+            $table->string("deviceID");
+            $table->string("deviceName");
+            $table->string('status')->default('Đang hoạt động');
+            $table->string('note')->nullable();
+            $table->string("roomID");
+            $table->string("buildingID");
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable();
+
+            $table->foreign('buildingID')->references('buildingID')->on('building');
+            $table->foreign('roomID')->references('roomID')->on('room');
         });
     }
 
@@ -27,6 +36,6 @@ class CreateDevicesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('devices');
+        Schema::dropIfExists('device');
     }
 }
