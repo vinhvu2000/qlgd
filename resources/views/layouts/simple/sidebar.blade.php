@@ -18,6 +18,7 @@
 						<a class="sidebar-link sidebar-title {{Route::currentRouteName() == 'admin.dashboard' ? 'active' : '' }}" href="{{ route('admin.dashboard') }}"><i data-feather="home"></i><span class="lan-3">Trang chủ</span>
 						</a>
 					</li>
+					@if (Auth::user()->role != "user")
 					<li class="sidebar-list">
 						<a class="sidebar-link sidebar-title {{Route::currentRouteName() == 'admin.room' ? 'active' : '' }}" href="{{ route('admin.room') }}">
 							<i data-feather="box"></i><span>Quản lí phòng học</span>
@@ -28,10 +29,17 @@
 							<i data-feather="monitor"></i><span>Quản lí thiết bị</span>
 						</a>
 					</li>
-					@if (Auth::user()->role == "superadmin")
+						@if (Auth::user()->role == "superadmin")
+						<li class="sidebar-list">
+							<a class="sidebar-link sidebar-title {{Route::currentRouteName() == 'admin.user' ? 'active' : '' }}" href="{{ route('admin.user') }}">
+								<i data-feather="users"></i><span>Quản lí người dùng</span>
+							</a>
+						</li>
+						@endif
+					@else
 					<li class="sidebar-list">
-						<a class="sidebar-link sidebar-title {{Route::currentRouteName() == 'admin.user' ? 'active' : '' }}" href="{{ route('admin.user') }}">
-							<i data-feather="users"></i><span>Quản lí người dùng</span>
+						<a class="sidebar-link sidebar-title {{Route::currentRouteName() == 'admin.room' ? 'active' : '' }}" href="{{ route('admin.room') }}">
+							<i data-feather="box"></i><span>Mượn phòng học</span>
 						</a>
 					</li>
 					@endif

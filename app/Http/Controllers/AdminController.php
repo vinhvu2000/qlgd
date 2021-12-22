@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Models\User;
 use App\Models\Room;
+use App\Models\Building;
+use App\Models\Device;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +14,6 @@ use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\UsersImport;
-use App\Models\Building;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -28,7 +29,6 @@ class AdminController extends Controller
 
     public function room(Request $request)
     {
-        
         if($request->ajax()){
             $buildingID = $request->buildingID == "ng" ? "%%" : $request->buildingID;
             $data = Room::where('buildingID', 'like' ,$buildingID)->get();
@@ -51,9 +51,32 @@ class AdminController extends Controller
         return abort('404');
     }
 
-    public function device()
+    public function device(Request $request)
     {
-        return view('admin.device');
+        if(Auth::user()->role == "superadmin"){
+            $bid = "%%";
+        }
+        else {
+            $temp = explode(" ",Auth::user()->name);
+            $bid = end($temp);
+        }
+        if($request->ajax()){
+            $data = Device::where('buildingID', 'like' ,$bid)->get();
+            return Datatables::of($data)->editColumn('roomID', '{{$buildingID}}-{{$roomID}}')
+                                        ->editColumn('created_at', '{{date("Y-m-d H:i:s", strtotime($created_at))}}')
+                                        ->editColumn('updated_at', '{{ $updated_at == ""?"":date("Y-m-d H:i:s", strtotime($updated_at)) }}')
+                                        ->addColumn('action', function ($row) {
+                                            $actionBtn = '<button class="btn btn-success btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" ><i class="fa fa-pencil"></i></button>
+					                        <button class="btn btn-secondary btn-sm sweet-5" type="button" onclick="deleteDevice(this)"><i class="fa fa-trash-o"></i></button>
+                                            ';
+                                            return $actionBtn;
+                                            })
+                                        ->rawColumns(['action'])
+                                        ->make(true);
+        }
+        $buildingID = Building::where('buildingID', 'like', $bid)->get();
+        $roomID = Room::where('buildingID', 'like', $bid)->get();
+        return view('admin.device',compact('buildingID','roomID'));
     }
 
     public function chat()
@@ -190,6 +213,38 @@ class AdminController extends Controller
         Room::where(['roomID' => $roomID, 'buildingID' => $buildingID])->delete();
     }
 
+    //Quản lí thiết bị
+    public function addDevice(Request $request)
+    {
+        $data = $request->input();
+        $validator = Validator::make($data, [
+            'deviceID' => ['required', 'unique:device'],
+            'deviceName' => ['required', 'lt:100']
+        ]);
+        if($validator->fails()){
+            return response()->json($validator->errors(), 422);
+        }
+    }
 
+    public function editDevice(Request $request)
+    {
+        $device = Device::find($request->id);
+        $device->deviceName = $request->deviceName;
+        $device->roomID = substr($request->roomID,strpos($request->roomID,"-")+1);
+        $device->buildingID = substr($request->roomID,0,strpos($request->roomID,"-"));
+        $device->status = $request->status;
+        $device->note = $request->note;
+        try {
+            $device->save();
+        } catch (\Exception $e) {
+            return response()->json('error',422);
+        }
+        return response()->json('success',200);
+    }
+
+    public function deleteDevice($id)
+    {
+        Device::where("deviceID",$id)->delete();
+    }
 
 }

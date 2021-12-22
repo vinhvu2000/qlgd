@@ -28,7 +28,7 @@
 					<span>Hiển thị danh sách thiết bị của tòa quản lí.</span>
 				</div>
 				<div class="card-body">
-					<table class="display datatables text-center" id="tableRoom">
+					<table class="display datatables text-center" id="tableDevice">
 						<thead>
 							<tr>
 								<th>STT</th>
@@ -57,8 +57,24 @@
 									</div>
 									<div class="mb-3">
 										<div class="input-group">
+											<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Mã thiết bị</span></div>
+											<input class="form-control" readonly name="deviceID" type="text" id="deviceID">
+										</div>
+									</div>
+									<div class="mb-3">
+										<div class="input-group">
+											<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Tên thiết bị</span></div>
+											<input class="form-control"  name="deviceName" type="text" id="deviceName">
+										</div>
+									</div>
+									<div class="mb-3">
+										<div class="input-group">
 											<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Phòng học</span></div>
-											<input class="form-control" readonly name="roomID" type="text" id="roomID">
+											<select name="roomID" class="form-control btn-square" id="roomID">
+												@foreach($roomID as $key => $value)
+												<option value="{{$value['buildingID']."-".$value['roomID']}}">{{$value['buildingID']."-".$value['roomID']}}</option>
+												@endforeach
+											</select>
 										</div>
 									</div>
 									<div class="mb-3">
@@ -93,42 +109,33 @@
 		<div class="col-sm-12">
 			<div class="card">
 				<div class="card-header">
-					<h5>Thêm phòng học</h5>
-					<span>Thêm phòng học vào danh sách phòng học của tòa quản lí.</span>
+					<h5>Thêm thiết bị</h5>
+					<span>Thêm thiết bị vào danh sách thiết bị của tòa quản lí.</span>
 				</div>
 				<div class="card-body">
-					<form method="POST" action="{{route('admin.addUser')}}" id="formAdd">
+					<form method="POST" action="{{route('admin.addDevice')}}" id="formAdd">
 						@csrf
 						<div class="row">
-							@if (Auth::user()->role == "superadmin")
 							<div class="col-md-2 mb-3">
 								<div class="input-group">
-									<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Mã toà</span></div>
-									<select name="buildingID" class="form-control btn-square">
-										{{-- @foreach($buildingID as $key => $value)
-										<option value="{{$value['buildingID']}}">{{$value['buildingID']}}</option>
-										@endforeach --}}
+									<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Phòng học</span></div>
+									<select name="roomID" class="form-control btn-square">
+										@foreach($roomID as $key => $value)
+												<option value="{{$value['buildingID']."-".$value['roomID']}}">{{$value['buildingID']."-".$value['roomID']}}</option>
+										@endforeach
 									</select>
 								</div>
 							</div>
-							@else
-							<div class="col-md-2 mb-3">
+							<div class="col-md-3 mb-3">
 								<div class="input-group">
-									<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Mã toà</span></div>
-									<input class="form-control" readonly name="buildingID" value="{{ old('buildingID') }}" type="text">
+									<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Mã thiết bị</span></div>
+									<input class="form-control" name="deviceID" value="{{ old('deviceID') }}" type="text">
 								</div>
 							</div>
-								
-							@endif
-							<div class="col-md-4 mb-3">
+							<div class="col-md-3 mb-3">
 								<div class="input-group">
-									<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Số phòng</span></div>
-									<input class="form-control @error('roomID') is-invalid @enderror"  name="roomID" value="{{ old('roomID') }}" type="text" placeholder="VD: 101 hoặc 101-110" required>
-									@error('roomID')
-										<span class="invalid-feedback" role="alert">
-										<strong>{{ $message }}</strong>
-										</span>
-									@enderror
+									<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Tên thiết bị</span></div>
+									<input class="form-control" name="deviceName" value="{{ old('deviceName') }}" type="text">
 								</div>
 							</div>
 							<div class="col-md-3 mb-3">
@@ -151,7 +158,7 @@
 <script src="{{asset('assets/js/sweet-alert/sweetalert.min.js')}}"></script>
 {{-- <script src="{{asset('assets/js/sweet-alert/app.js')}}"></script> --}}
 <script>
-	function deleteRoom(t) {
+	function deleteDevice(t) {
 		var tbody = $(t).parent().parent();
 		swal({
 			title: "Bạn có chắc chắn không?",
@@ -186,10 +193,7 @@
 		processing: true,
 		serverSide: true,
 		scrollX: true,
-		ajax: {
-			url: "{{ route('admin.device') }}",
-			data: {"buildingID": $(".profile-nav .media-body span").text().substring($(".profile-nav .media-body span").text().length-2).trim()},
-		},
+		ajax: "{{ route('admin.device') }}",
 		columns: [
 			{data: 'id', name: 'id'},
 			{data: 'deviceID', name: 'deviceID'},
@@ -207,15 +211,17 @@
 	$("#exampleModal").on("show.bs.modal", function (e) {
 		var tr = $(e.relatedTarget).parent().parent();
 		$("#id").val($(tr).find("td:nth-child(1)").text());
-		$("#roomID").val($(tr).find("td:nth-child(2)").text());
-		$("#status").val($(tr).find("td:nth-child(3)").text());
-		$("#note").val($(tr).find("td:nth-child(4)").text());
+		$("#deviceID").val($(tr).find("td:nth-child(2)").text());
+		$("#deviceName").val($(tr).find("td:nth-child(3)").text());
+		$("#roomID").val($(tr).find("td:nth-child(4)").text());
+		$("#status").val($(tr).find("td:nth-child(5)").text());
+		$("#note").val($(tr).find("td:nth-child(6)").text());
 	});
 
 	$(".modalForm").submit(function (e) {
 		e.preventDefault();
 		$.ajax({
-			url: '{{route("admin.editRoom")}}',
+			url: '{{route("admin.editDevice")}}',
 			type: 'POST',
 			data: $(this).serialize(),
 			headers: {
@@ -237,14 +243,14 @@
 	$("#formAdd").submit(function (e) {
 		e.preventDefault();
 		$.ajax({
-			url: '{{route("admin.addRoom")}}',
+			url: '{{route("admin.addDevice")}}',
 			type: 'POST',
 			data: $(this).serialize(),
 			headers: {
 				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 			},
 			success: function(data){
-				swal("Thêm phòng học thành công", {icon: "success",});
+				swal("Thêm thiết bị thành công", {icon: "success",});
 				table.ajax.reload();
 			},
 			error: function (data) {

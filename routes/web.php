@@ -413,9 +413,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['isAdmin', 'auth', 'preventB
     Route::post('deleteRoom/{id}',[AdminController::class, 'deleteRoom'])->name('admin.deleteRoom');
 
     //Quản lí thiết bị
-    Route::post('addRoom',[AdminController::class, 'addRoom'])->name('admin.addRoom');
-    Route::post('editRoom',[AdminController::class, 'editRoom'])->name('admin.editRoom');
-    Route::post('deleteRoom/{id}',[AdminController::class, 'deleteRoom'])->name('admin.deleteRoom');
+    Route::post('addDevice',[AdminController::class, 'addDevice'])->name('admin.addDevice');
+    Route::post('editDevice',[AdminController::class, 'editDevice'])->name('admin.editDevice');
+    Route::post('deleteDevice/{id}',[AdminController::class, 'deleteDevice'])->name('admin.deleteDevice');
     
 });
 
