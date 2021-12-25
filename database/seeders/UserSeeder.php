@@ -23,7 +23,7 @@ class UserSeeder extends Seeder
             'avatar' => 'assets/images/avatar/user.png'
         ]);
         DB::table('users')->insert([
-            'name' => "Quản lí nhà C",
+            'name' => "Quản lý nhà C",
             'email' => "adminC@hnue.edu.vn",
             'password' => Hash::make('12345678'),
             'role' => "admin",

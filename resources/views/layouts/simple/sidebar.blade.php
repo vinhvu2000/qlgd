@@ -21,18 +21,23 @@
 					@if (Auth::user()->role != "user")
 					<li class="sidebar-list">
 						<a class="sidebar-link sidebar-title {{Route::currentRouteName() == 'admin.room' ? 'active' : '' }}" href="{{ route('admin.room') }}">
-							<i data-feather="box"></i><span>Quản lí phòng học</span>
+							<i data-feather="box"></i><span>Quản lý phòng học</span>
 						</a>
 					</li>
 					<li class="sidebar-list">
 						<a class="sidebar-link sidebar-title {{Route::currentRouteName() == 'admin.device' ? 'active' : '' }}" href="{{ route('admin.device') }}">
-							<i data-feather="monitor"></i><span>Quản lí thiết bị</span>
+							<i data-feather="monitor"></i><span>Quản lý thiết bị</span>
 						</a>
 					</li>
 						@if (Auth::user()->role == "superadmin")
 						<li class="sidebar-list">
 							<a class="sidebar-link sidebar-title {{Route::currentRouteName() == 'admin.user' ? 'active' : '' }}" href="{{ route('admin.user') }}">
-								<i data-feather="users"></i><span>Quản lí người dùng</span>
+								<i data-feather="users"></i><span>Quản lý người dùng</span>
+							</a>
+						</li>
+						<li class="sidebar-list">
+							<a class="sidebar-link sidebar-title {{Route::currentRouteName() == 'admin.assign' ? 'active' : '' }}" href="{{ route('admin.assign') }}">
+								<i data-feather="calendar"></i><span>Phân bố phòng học</span>
 							</a>
 						</li>
 						@endif

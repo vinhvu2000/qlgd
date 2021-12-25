@@ -1,9 +1,10 @@
 @extends('layouts.simple.master')
 
-@section('title', 'Quản Lí Phòng Học')
+@section('title', 'Quản lý Phòng Học')
 
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{asset('assets/css/vendors/datatables.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('assets/css/vendors/dropzone.css')}}">
 <link rel="stylesheet" type="text/css" href="{{asset('assets/css/vendors/sweetalert2.css')}}">
 @endsection
 
@@ -11,11 +12,11 @@
 @endsection
 
 @section('breadcrumb-title')
-<h3>Quản lí thiết bị</h3>
+<h3>Quản lý thiết bị</h3>
 @endsection
 
 @section('breadcrumb-items')
-<li class="breadcrumb-item">Quản lí thiết bị</li>
+<li class="breadcrumb-item">Quản lý thiết bị</li>
 @endsection
 
 @section('content')
@@ -25,7 +26,7 @@
 			<div class="card">
 				<div class="card-header">
 					<h5>Danh sách thiết bị</h5>
-					<span>Hiển thị danh sách thiết bị của tòa quản lí.</span>
+					<span>Hiển thị danh sách thiết bị của tòa quản lý.</span>
 				</div>
 				<div class="card-body">
 					<table class="display datatables text-center" id="tableDevice">
@@ -110,39 +111,63 @@
 			<div class="card">
 				<div class="card-header">
 					<h5>Thêm thiết bị</h5>
-					<span>Thêm thiết bị vào danh sách thiết bị của tòa quản lí.</span>
+					<span>Thêm thiết bị vào danh sách thiết bị của tòa quản lý.</span>
 				</div>
 				<div class="card-body">
-					<form method="POST" action="{{route('admin.addDevice')}}" id="formAdd">
-						@csrf
-						<div class="row">
-							<div class="col-md-2 mb-3">
-								<div class="input-group">
-									<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Phòng học</span></div>
-									<select name="roomID" class="form-control btn-square">
-										@foreach($roomID as $key => $value)
-												<option value="{{$value['buildingID']."-".$value['roomID']}}">{{$value['buildingID']."-".$value['roomID']}}</option>
-										@endforeach
-									</select>
-								</div>
+					<div class="tabbed-card">
+						<ul class="pull-right nav nav-tabs border-tab nav-primary" id="top-tab2" role="tablist">
+							<li class="nav-item"><a class="nav-link active" id="top-home-tab2" data-bs-toggle="tab" href="#top-home2" role="tab" aria-controls="top-home" aria-selected="false"><i class="fa fa-pencil"></i></i>Thêm một</a></li>
+							<li class="nav-item"><a class="nav-link" id="profile-top-tab2" data-bs-toggle="tab" href="#top-profile2" role="tab" aria-controls="top-profile2" aria-selected="true"><i class="fa fa-file-excel-o" aria-hidden="true"></i>Thêm nhiều</a></li>
+						</ul>
+						<div class="tab-content" id="top-tabContent2">
+							<div class="tab-pane fade active show" id="top-home2" role="tabpanel" aria-labelledby="top-home-tab">
+								<form method="POST" action="{{route('admin.addDevice')}}" id="formAdd">
+									@csrf
+									<div class="row">
+										<div class="col-3 mb-3">
+											<div class="input-group">
+												<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Phòng học</span></div>
+												<select name="roomID" class="form-control btn-square">
+													@foreach($roomID as $key => $value)
+															<option value="{{$value['buildingID']."-".$value['roomID']}}">{{$value['buildingID']."-".$value['roomID']}}</option>
+													@endforeach
+												</select>
+											</div>
+										</div>
+										<div class="col-md-3 mb-3">
+											<div class="input-group">
+												<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Mã thiết bị</span></div>
+												<input class="form-control" name="deviceID" value="{{ old('deviceID') }}" type="text">
+											</div>
+										</div>
+										<div class="col-md-3 mb-3">
+											<div class="input-group">
+												<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Tên thiết bị</span></div>
+												<input class="form-control" name="deviceName" value="{{ old('deviceName') }}" type="text">
+											</div>
+										</div>
+										<div class="col-md-3 mb-3">
+											<button class="btn btn-primary" type="submit">Thêm</button>
+										</div>
+									</div>
+								</form>
 							</div>
-							<div class="col-md-3 mb-3">
-								<div class="input-group">
-									<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Mã thiết bị</span></div>
-									<input class="form-control" name="deviceID" value="{{ old('deviceID') }}" type="text">
+							<div class="tab-pane fade" id="top-profile2" role="tabpanel" aria-labelledby="profile-top-tab">
+								<form class="dropzone dropzone-info" id="fileTypeValidation" enctype="multipart/form-data" action="{{route('admin.addDevice')}}" method="post">
+									@csrf
+									<div class="dz-message needsclick">
+										<i class="icon-cloud-up"></i>
+										<h6>Drop files here or click to upload.</h6>
+									</div>
+								</form>
+								<hr>
+								<div class="text-center">
+									<button class="btn btn-primary" type="submit" id="submit">Thêm</button>
 								</div>
-							</div>
-							<div class="col-md-3 mb-3">
-								<div class="input-group">
-									<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Tên thiết bị</span></div>
-									<input class="form-control" name="deviceName" value="{{ old('deviceName') }}" type="text">
-								</div>
-							</div>
-							<div class="col-md-3 mb-3">
-								<button class="btn btn-primary" type="submit">Thêm</button>
 							</div>
 						</div>
-					</form>
+					</div>
+					
 				</div>
 			</div>
 		</div>
@@ -155,8 +180,8 @@
 
 @section('script')
 <script src="{{asset('assets/js/datatable/datatables/jquery.dataTables.min.js')}}"></script>
+<script src="{{asset('assets/js/dropzone/dropzone.js')}}"></script>
 <script src="{{asset('assets/js/sweet-alert/sweetalert.min.js')}}"></script>
-{{-- <script src="{{asset('assets/js/sweet-alert/app.js')}}"></script> --}}
 <script>
 	function deleteDevice(t) {
 		var tbody = $(t).parent().parent();
@@ -206,7 +231,17 @@
 			{data: 'action', name: 'action', orderable: false, searchable: false}]
 	});
 
-	 
+	Dropzone.autoDiscover = false;
+  
+	var myDropzone = new Dropzone(".dropzone", { 
+	autoProcessQueue: false,
+	paramName: "file",
+	acceptedFiles: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
+	});
+
+	$('#submit').click(function(){
+		myDropzone.processQueue();
+	});
 
 	$("#exampleModal").on("show.bs.modal", function (e) {
 		var tr = $(e.relatedTarget).parent().parent();

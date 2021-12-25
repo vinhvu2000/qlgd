@@ -1,6 +1,6 @@
 @extends('layouts.simple.master')
 
-@section('title', 'Quản Lí Phòng Học')
+@section('title', 'Quản lý Phòng Học')
 
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{asset('assets/css/vendors/datatables.css')}}">
@@ -11,11 +11,11 @@
 @endsection
 
 @section('breadcrumb-title')
-<h3>Quản Lí Phòng Học</h3>
+<h3>Quản lý Phòng Học</h3>
 @endsection
 
 @section('breadcrumb-items')
-<li class="breadcrumb-item">Quản lí phòng học</li>
+<li class="breadcrumb-item">Quản lý phòng học</li>
 @endsection
 
 @section('content')
@@ -25,7 +25,7 @@
 			<div class="card">
 				<div class="card-header">
 					<h5>Danh sách phòng học</h5>
-					<span>Hiển thị danh sách phòng học của tòa quản lí.</span>
+					<span>Hiển thị danh sách phòng học của tòa quản lý.</span>
 				</div>
 				<div class="card-body">
 					<table class="display datatables text-center" id="tableRoom">
@@ -92,7 +92,7 @@
 			<div class="card">
 				<div class="card-header">
 					<h5>Thêm phòng học</h5>
-					<span>Thêm phòng học vào danh sách phòng học của tòa quản lí.</span>
+					<span>Thêm phòng học vào danh sách phòng học của tòa quản lý.</span>
 				</div>
 				<div class="card-body">
 					<form method="POST" action="{{route('admin.addUser')}}" id="formAdd">

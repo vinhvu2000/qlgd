@@ -402,17 +402,21 @@ Route::group(['prefix' => 'admin', 'middleware' => ['isAdmin', 'auth', 'preventB
     Route::get('support',[AdminController::class, 'support'])->name('admin.support');
     Route::get('settings',[AdminController::class, 'settings'])->name('admin.settings');
 
-    //Quản lí tài khoản
+    //Phân bố phòng học
+    Route::get('assign',[AdminController::class, 'assign'])->name('admin.assign');
+    Route::post('dashboard',[AdminController::class, 'dashboard'])->name('admin.dashboard');
+
+    //Quản lý tài khoản
     Route::post('addUser',[AdminController::class, 'addUser'])->name('admin.addUser');
     Route::post('editUser',[AdminController::class, 'editUser'])->name('admin.editUser');
     Route::post('deleteUser/{id}',[AdminController::class, 'deleteUser'])->name('admin.deleteUser');
 
-    //Quản lí phòng học
+    //Quản lý phòng học
     Route::post('addRoom',[AdminController::class, 'addRoom'])->name('admin.addRoom');
     Route::post('editRoom',[AdminController::class, 'editRoom'])->name('admin.editRoom');
     Route::post('deleteRoom/{id}',[AdminController::class, 'deleteRoom'])->name('admin.deleteRoom');
 
-    //Quản lí thiết bị
+    //Quản lý thiết bị
     Route::post('addDevice',[AdminController::class, 'addDevice'])->name('admin.addDevice');
     Route::post('editDevice',[AdminController::class, 'editDevice'])->name('admin.editDevice');
     Route::post('deleteDevice/{id}',[AdminController::class, 'deleteDevice'])->name('admin.deleteDevice');

@@ -1,23 +1,22 @@
 @extends('layouts.simple.master')
-@section('title', 'Quản lí người dùng')
+@section('title', 'Quản lý người dùng')
 
 @section('css')
 <link rel="stylesheet" type="text/css" href="{{asset('assets/css/vendors/datatables.css')}}">
 <link rel="stylesheet" type="text/css" href="{{asset('assets/css/vendors/dropzone.css')}}">
 <link rel="stylesheet" type="text/css" href="{{asset('assets/css/vendors/sweetalert2.css')}}">
-
 @endsection
 
 @section('style')
 @endsection
 
 @section('breadcrumb-title')
-<h3>Quản lí người dùng</h3>
+<h3>Quản lý người dùng</h3>
 @endsection
 
 @section('breadcrumb-items')
 <li class="breadcrumb-item">Super Admin</li>
-<li class="breadcrumb-item active">Quản lí người dùng</li>
+<li class="breadcrumb-item active">Quản lý người dùng</li>
 @endsection
 
 @section('content')
@@ -172,7 +171,6 @@
 <script src="{{asset('assets/js/datatable/datatables/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('assets/js/dropzone/dropzone.js')}}"></script>
 <script src="{{asset('assets/js/sweet-alert/sweetalert.min.js')}}"></script>
-{{-- <script src="{{asset('assets/js/sweet-alert/app.js')}}"></script> --}}
 <script>
 	function deleteUser(t) {
 		var tbody = $(t).parent().parent();

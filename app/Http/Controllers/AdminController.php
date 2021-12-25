@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Auth\RegisterController;
+use App\Imports\ScheduleImport;
 use App\Models\User;
 use App\Models\Room;
 use App\Models\Building;
@@ -14,17 +15,42 @@ use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\UsersImport;
+use App\Models\Schedule;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
-
+use PhpParser\Node\Stmt\Foreach_;
 
 class AdminController extends Controller
 {
-    public function dashboard()
+    public function dashboard(Request $request)
     {
-        return view('admin.dashboard');
+        if($request->ajax()){
+            if($request->file('file')){
+                $schedule = new ScheduleImport();
+                $schedule->genData($request->file('file'));
+            }
+            else{
+
+            }
+        }
+        $buildingID = Building::all();
+        $bid = $buildingID[0]['buildingID'];
+        $roomID = Room::where('buildingID',$bid)->get();
+        $floorArr = [];
+        foreach($roomID as $key => $value){
+            array_push($floorArr,substr($value['roomID'],0,-2));
+        }
+        $floorArr = array_unique($floorArr);
+        sort($floorArr);
+
+        return view('admin.dashboard',compact('buildingID','floor'));
+    }
+
+    public function assign(Request $request)
+    {
+        return view('admin.assign');
     }
 
     public function room(Request $request)
@@ -113,7 +139,7 @@ class AdminController extends Controller
         return view('admin.settings');
     }
 
-    //Quản lí tài khoản
+    //Quản lý tài khoản
     public function addUser(Request $request)
     {
         if($request->file('file')){
@@ -152,7 +178,7 @@ class AdminController extends Controller
         User::find($id)->delete();
     }
 
-    //Quản lí phòng học
+    //Quản lý phòng học
     public function addRoom(Request $request)
     {
         $data = $request->input();
@@ -213,24 +239,30 @@ class AdminController extends Controller
         Room::where(['roomID' => $roomID, 'buildingID' => $buildingID])->delete();
     }
 
-    //Quản lí thiết bị
+    //Quản lý thiết bị
     public function addDevice(Request $request)
     {
-        $data = [
-            'roomID' => substr($request->roomID,strpos($request->roomID,"-")+1),
-            'buildingID' => substr($request->roomID,0,strpos($request->roomID,"-")),
-            'deviceID' => $request->deviceID,
-            'deviceName' => $request->deviceName
-        ];
-        $validator = Validator::make($data, [
-            'deviceID' => ['required', 'string', 'unique:device'],
-            'deviceName' => ['required', 'string', 'max:100'],
-        ]);
-        if($validator->fails()){
-            return response()->json($validator->errors(), 422);
+        if($request->file('file')){
+            Excel::import(new UsersImport, $request->file('file'));
         }
-        Device::create($data);
-        return response()->json('success', 200);
+        else{
+            $data = [
+                'roomID' => substr($request->roomID,strpos($request->roomID,"-")+1),
+                'buildingID' => substr($request->roomID,0,strpos($request->roomID,"-")),
+                'deviceID' => $request->deviceID,
+                'deviceName' => $request->deviceName
+            ];
+            $validator = Validator::make($data, [
+                'deviceID' => ['required', 'string', 'unique:device'],
+                'deviceName' => ['required', 'string', 'max:100'],
+            ]);
+            if($validator->fails()){
+                return response()->json($validator->errors(), 422);
+            }
+            Device::create($data);
+            return response()->json('success', 200);
+        }
+        
     }
 
     public function editDevice(Request $request)
