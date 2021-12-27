@@ -350,6 +350,9 @@ class AdminController extends Controller
         $data = $request->input();
         $data['buildingID'] = substr($data['roomID'],0,strpos($data['roomID'],"-"));
         $data['roomID'] = substr($data['roomID'],strpos($data['roomID'],"-")+1);
+        $data['credit'] = $data['timeEnd']-$data['timeStart'];
+        $data['time'] = $data['timeStart']<12?'Sáng':'Chiều';
         Schedule::create($data);
+        return redirect()->back();
     }
 }

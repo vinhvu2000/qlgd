@@ -137,7 +137,7 @@
 										 <div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Phòng học</span></div>
 										 <select name="roomID" class="form-control btn-square">
 											 @foreach($roomArr as $key => $value)
-											 <option value="{{$value->id}}">{{$value->buildingID.'-'.$value->roomID}}</option>
+											 <option value="{{$value->buildingID.'-'.$value->roomID}}">{{$value->buildingID.'-'.$value->roomID}}</option>
 											 @endforeach
 										 </select>
 									 </div>
