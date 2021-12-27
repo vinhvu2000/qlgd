@@ -15,6 +15,12 @@ class RoomSeeder extends Seeder
      */
     public function run()
     {
+        for ($i=101; $i <= 105; $i++) { 
+            DB::table('room')->insert([
+                'roomID' => $i,
+                'buildingID' => "C"
+            ]);
+        }
         DB::table('room')->insert([
             'roomID' => "309",
             'buildingID' => "C"

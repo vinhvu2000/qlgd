@@ -29,95 +29,184 @@
 					<span>Hiển thị thời khóa biểu của tòa nhà.</span>
 				</div>
 				<div class="card-body">
-						<form method="POST" action="{{route('admin.dashboard')}}" id="formAdd">
-							@csrf
-							<div class="row">
-								<div class="col-md-2 mb-3">
-									<div class="input-group">
-										<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Tòa</span></div>
-										<select name="building" class="form-control btn-square">
-											@foreach($buildingID as $key => $value)
-											<option value="{{$value['buildingID']}}">{{$value['buildingID']}}</option>
-											@endforeach
-										</select>
-									</div>
-								</div>
-								<div class="col-md-2 mb-3">
-									<div class="input-group">
-										<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Tầng</span></div>
-										<select name="floor" class="form-control btn-square">
-											@foreach($floor as $key => $value)
-											<option value="{{$value}}">{{$value}}</option>
-											@endforeach
-										</select>
-									</div>
-								</div>
-								<div class="col-2 mb-3">
-									<div class="input-group">
-										<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Ngày</span></div>
-										<input class="form-control" value="{{CARBON\CARBON::now()->toDateString()}}" name="day" value="{{ old('day') }}" type="date">
-									</div>
-								</div>
-								
-								<div class="col-md-3 mb-3">
-									<button class="btn btn-primary" type="submit">Tìm kiếm</button>
+					<form method="POST" action="{{route('admin.dashboard')}}" id="formAdd">
+						@csrf
+						<div class="row">
+							@if (Auth::user()->role == 'superadmin')
+							<div class="col-md-2 mb-3">
+								<div class="input-group">
+									<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Tòa</span></div>
+									<select name="building" class="form-control btn-square">
+										@foreach($buildingID as $key => $value)
+										<option value="{{$value['buildingID']}}">{{$value['buildingID']}}</option>
+										@endforeach
+									</select>
 								</div>
 							</div>
-						</form>
-					<table class="display datatables text-center" id="tableUser">
+							@endif
+							<div class="col-2 mb-3">
+								<div class="input-group">
+									<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Tầng</span></div>
+									<select name="floor" class="form-control btn-square">
+										@foreach($floorArr as $key => $value)
+										<option 
+											@if($value == $input['floor'])
+												selected 
+											@endif
+											value="{{$value}}">{{$value}}</option>
+										@endforeach
+									</select>
+								</div>
+							</div>
+							<div class="col-3 mb-3">
+								<div class="input-group">
+									<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Ngày</span></div>
+									<input class="form-control" name="day" value="{{ $input['day'] == ''?CARBON\CARBON::now()->toDateString():$input['day']}}" type="date">
+								</div>
+							</div>
+							
+							<div class="col-3 mb-3">
+								<button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+								<button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#roomModal"><i class="fa fa-plus"></i></button>
+							</div>
+						</div>
+					</form>
+					<table class="table table-bordered text-center align-middle">
 						<thead>
 							<tr>
-								<th>STT</th>
-								<th>Tên</th>
-								<th>Email</th>
-								<th>Vai trò</th>
-								<th>Hành động</th>
+								<th></th>
+								@foreach($room as $key => $value)
+								<th class="table-primary"><b>{{$value}}</b></th>
+								@endforeach
 							</tr>
 						</thead>
+						<tbody>
+							@foreach ($time as $hour)
+							<tr>
+								<td class="table-info">{{$hour.":00"}}</td>
+								@foreach($room as $value)
+									@if ($schedule[$hour][$value] == "continue")
+
+									@elseif ($schedule[$hour][$value] != null)
+										<td class="table-warning" rowspan="{{$schedule[$hour][$value]->timeEnd-$schedule[$hour][$value]->timeStart+1}}">
+											{{$schedule[$hour][$value]->subjectID}}
+											<br>{{$schedule[$hour][$value]->subjectName}}
+											<br>{{$schedule[$hour][$value]->teacher}}
+										</td>
+									@else
+										<td></td>
+									@endif
+								@endforeach
+							</tr>
+							@endforeach
+						</tbody>
 					</table>
-					<div class="modal fade modal-centered" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-						<div class="modal-dialog modal-dialog-centered" role="document">
-						   <div class="modal-content">
-							  <div class="modal-header">
-                           			<h5 class="modal-title">Cập nhật thông tin tài khoản</h5>
-								 <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
-							  </div>
-							  <div class="modal-body">
-								 <form method="POST" class="modalForm">
-									<div class="mb-3">
-											<input class="form-control" hidden name="id" type="text" id="id" readonly>
+					<form action="{{route('admin.addSchedule')}}" method="POST">
+					@csrf
+					<div class="modal fade modal-centered " id="roomModal" aria-hidden="true" aria-labelledby="roomModal" tabindex="-1">
+						<div class="modal-dialog fadeIn animated modal-dialog-centered">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title">Thêm lịch học</h5>
+							  		<button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+						   		</div>
+						   		<div class="modal-body">
+							  		<form method="POST" class="modalForm">
+										<div class="mb-3">
+									 	<div class="input-group">
+										 <div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Ngày</span></div>
+										 <input class="form-control" name="day" value="{{ $input['day'] == ''?CARBON\CARBON::now()->toDateString():$input['day']}}" type="date">
+									 </div>
+								 </div>
+								 <div class="row mb-3">
+									 <div class="col">
+										 <div class="input-group">
+											 <div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Từ</span></div>
+											 <input class="form-control"  name="timeStart" type="text" id="timeStart" placeholder="VD:7">
+										 </div>
+									 </div>
+									 <div class="col">
+										 <div class="input-group">
+											 <div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Đến</span></div>
+											 <input class="form-control"  name="timeEnd" type="text" id="timeEnd" placeholder="VD:12">
+										 </div>
+									 </div>
+								 </div>
+								 <div class="mb-3">
+									 <div class="input-group">
+										 <div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Phòng học</span></div>
+										 <select name="roomID" class="form-control btn-square">
+											 @foreach($roomArr as $key => $value)
+											 <option value="{{$value->id}}">{{$value->buildingID.'-'.$value->roomID}}</option>
+											 @endforeach
+										 </select>
+									 </div>
+								 </div>
+								 <div class="mb-3">
+									 <div class="input-group">
+										 <div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Người mượn</span></div>
+										 <input class="form-control" name="teacher" value="" type="text" placeholder="VD: Nguyễn Văn A">
+									 </div>
+								 </div>
+								 <div class="mb-3">
+									<div class="input-group">
+										<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Mã môn học</span></div>
+										<input class="form-control" name="subjectID" value="" type="text" placeholder="VD: COMP 411">
 									</div>
-									<div class="mb-3">
-										<div class="input-group">
-											<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Tên</span></div>
-											<input class="form-control"  name="name" type="text" id="name">
-										</div>
+								</div>
+								<div class="mb-3">
+									<div class="input-group">
+										<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Tên môn học</span></div>
+										<input class="form-control" name="subjectName" value="" type="text" placeholder="VD: Công nghệ phần mềm">
 									</div>
-									<div class="mb-3">
-										<div class="input-group">
-											<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">@</span></div>
-											<input class="form-control"  name="email" type="email" id="email">
-										</div>
-									</div>
-									<div class="mb-3">
-										<div class="input-group">
-											<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Vai trò</span></div>
-											<select class="form-select" name="role" type="text" id="role">
-												<option value="superadmin">Super Admin</option>
-												<option value="admin">Admin</option>
-												<option value="user">User</option>
-											  </select>
-										</div>
-									</div>
-							  </div>
-							  <div class="modal-footer">
-								 <button class="btn btn-primary" type="submit">Cập nhật</button>
-								 <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Đóng</button>
-								</form>
-							  </div>
+								</div>
 						   </div>
+								<div class="modal-footer">
+									<button class="btn btn-primary" data-bs-target="#deviceModal" data-bs-toggle="modal" data-bs-dismiss="modal">Tiếp theo</button>
+									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+								</div>
+							</div>
 						</div>
-					 </div>
+					</div>
+					<div class="modal fade modal-centered" id="deviceModal" aria-hidden="true" aria-labelledby="deviceModal" tabindex="-1">
+						<div class="modal-dialog fadeIn animated modal-dialog-centered">
+							<div class="modal-content">
+								<div class="modal-header">
+										 <h5 class="modal-title">Mượn thiết bị</h5>
+								   <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<div class="form-check mb-3">
+										<input class="form-check-input" type="checkbox" value="" checked id="flexCheckDefault">
+										<h6 class="form-check-label" for="flexCheckDefault">Chìa khóa</h6>
+									</div>
+									<div class="form-check mb-3">
+										<input class="form-check-input" type="checkbox" value="" checked id="flexCheckDefault">
+										<h6 class="form-check-label" for="flexCheckDefault">Microphone</h6>
+									</div>
+									<div class="form-check mb-3">
+										<input class="form-check-input" type="checkbox" value="" checked id="flexCheckDefault">
+										<h6 class="form-check-label" for="flexCheckDefault">Điều khiển máy chiếu</h6>
+									</div>
+									<div class="form-check mb-3">
+										<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+										<h6 class="form-check-label" for="flexCheckDefault">Loa</h6>
+									</div>
+									<div class="form-check mb-3">
+										<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+										<h6 class="form-check-label" for="flexCheckDefault">Cáp HDMI</h6>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<!-- Toogle to first dialog, `data-bs-dismiss` attribute can be omitted - clicking on link will close dialog anyway -->
+									<a class="btn btn-success" href="#roomModal" data-bs-toggle="modal" data-bs-dismiss="modal" role="button">Quay lại</a>
+									<button class="btn btn-primary" type="submit">Thêm</button>
+									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					</form>
 				</div>
 			</div>
 		</div>
@@ -234,6 +323,11 @@
 
 	$('#submit').click(function(){
 		myDropzone.processQueue();
+	});
+	$('.schedule').on('change', function() {
+		$.ajax({
+			url:{{route('admin.dashboard')}}
+		})
 	});
 </script>
 @endsection

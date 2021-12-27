@@ -405,6 +405,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['isAdmin', 'auth', 'preventB
     //Phân bố phòng học
     Route::get('assign',[AdminController::class, 'assign'])->name('admin.assign');
     Route::post('dashboard',[AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::post('addSchedule',[AdminController::class, 'addSchedule'])->name('admin.addSchedule');
 
     //Quản lý tài khoản
     Route::post('addUser',[AdminController::class, 'addUser'])->name('admin.addUser');

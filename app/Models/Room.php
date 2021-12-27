@@ -11,5 +11,9 @@ class Room extends Model
     protected $table = "room";
     public $incrementing = true;
     public $timestamps = true;
-    protected $fillable = ['roomID', 'buildingID', 'status', 'note']; 
+    protected $fillable = ['roomID', 'buildingID', 'status', 'note'];
+    public function buildings()
+    {
+        return $this->belongsTo(Building::class, 'building_id');
+    }
 }

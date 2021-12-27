@@ -9,7 +9,13 @@ class Building extends Model
 {
     use HasFactory;
     protected $table = "building";
-    public $incrementing = true;
+    protected $primaryKey = 'buildingID';
+    public $incrementing = false;
     public $timestamps = true;
     protected $fillable = ['buildingID', 'status', 'note']; 
+    public function rooms()
+    {
+    	return $this->hasMany(Room::class,'buildingID');
+    }
+
 }
