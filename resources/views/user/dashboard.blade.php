@@ -314,7 +314,7 @@
 											</div>
 											<div class="col-4">
 												<div class="form-check form-check-inline">
-													<input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="SPE" name="listDevice">
+													<input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="SPE" name="listDevice[]">
 													<label class="form-check-label" for="inlineCheckbox3">Loa</label>
 												</div>
 											</div>
@@ -322,13 +322,13 @@
 										<div class="row mb-3">
 											<div class="col-4">
 												<div class="form-check form-check-inline">
-													<input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="CAB" name="listDevice">
+													<input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="CAB" name="listDevice[]">
 													<label class="form-check-label" for="inlineCheckbox4">Cáp HDMI</label>
 												</div>
 											</div>
 											<div class="col-8">
 												<div class="form-check form-check-inline">
-													<input class="form-check-input" type="checkbox" id="inlineCheckbox5" disabled checked value="MIC">
+													<input class="form-check-input" type="checkbox" id="inlineCheckbox5" disabled checked>
 													<label class="form-check-label" for="inlineCheckbox5">Điều khiển máy chiếu</label>
 												</div>
 											</div>
@@ -536,7 +536,7 @@
 				})
 			},
 			error: function () {
-				swal("Cập nhật phòng học thất bại", {
+				swal("Không thể nhận phòng", {
 				icon: "error",
 				});
 			}

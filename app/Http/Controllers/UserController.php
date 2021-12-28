@@ -68,10 +68,13 @@ class UserController extends Controller
     public function checkIn(Request $request)
     {
         $schedule = Schedule::find($request->id);
-        foreach($request->listDevice as $key => $value){
-            $device = Device::where("device_id","like",$value)->where("roomID","Kho")->first();
-            $schedule->listDevice.=",$device->device_id";
+        if($request->listDevice != null){
+            foreach($request->listDevice as $key => $value){
+                $device = Device::where("deviceID","like",$value."%")->where("roomID","100")->first();
+                $schedule->listDevice.=",$device->deviceID";
+            }
         }
+        
         $schedule->status = 1;
         $schedule->user = json_encode(['account' => Auth::user()->name, 'user' => $request->user]);
         $schedule->save();

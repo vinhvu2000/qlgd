@@ -63,7 +63,13 @@ class ScheduleImport implements FromCollection, WithValidation
             $timeStart = $temp[0]<=5?6+$temp[0]:7+$temp[0];
             $timeEnd = $timeStart+$temp[1]-$temp[0]+1;
             $value4toArr = explode(" ",$value[4]);
+            $listDevice = [
+                "KEY".$roomArray[0]."-".$roomArray[1],
+                "MIC".$roomArray[0]."-".$roomArray[1],
+                "REM".$roomArray[0]."-".$roomArray[1]
+            ];
             foreach ($period as $key => $date) {
+               
                 if($date->dayOfWeek + 1 == $value4toArr[1]){
                     $data = [
                         'day' => $date->format('Y-m-d'),
@@ -75,6 +81,7 @@ class ScheduleImport implements FromCollection, WithValidation
                         'subjectName' => $value[1],
                         'credit' => $value[2],
                         'teacher' => $value[5],
+                        'listDevice' => implode(",",$listDevice),
                         'user' => json_encode(['account' => '', 'user' => ''])
                     ];
                     $validator = Validator::make($data, $this->rules());
@@ -99,6 +106,7 @@ class ScheduleImport implements FromCollection, WithValidation
                             'subjectID' => $value[0],
                             'subjectName' => $value[1],
                             'credit' => $value[2],
+                            'listDevice' => implode(",",$listDevice),
                             'teacher' => $value[5]
                         ];
                         $validator = Validator::make($data, $this->rules());

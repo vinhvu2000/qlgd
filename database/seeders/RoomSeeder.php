@@ -15,66 +15,28 @@ class RoomSeeder extends Seeder
      */
     public function run()
     {
-        for ($i=101; $i <= 105; $i++) { 
-            DB::table('room')->insert([
-                'roomID' => $i,
-                'buildingID' => "C"
-            ]);
+        for($i=1;$i<=3;$i++){
+            for ($j=1; $j <= 5; $j++) { 
+                DB::table('room')->insert([
+                    'roomID' => $i.'0'.$j,
+                    'buildingID' => "C"
+                ]);
+            }
+        }
+        for($i=1;$i<=2;$i++){
+            for ($j=1; $j <= 5; $j++) { 
+                DB::table('room')->insert([
+                    'roomID' => $i.'0'.$j,
+                    'buildingID' => "K1"
+                ]);
+            }
         }
         DB::table('room')->insert([
-            'roomID' => "309",
+            'roomID' => '100',
             'buildingID' => "C"
         ]);
         DB::table('room')->insert([
-            'roomID' => "408",
-            'buildingID' => "C"
-        ]);
-        DB::table('room')->insert([
-            'roomID' => "416",
-            'buildingID' => "C"
-        ]);
-        DB::table('room')->insert([
-            'roomID' => "411",
-            'buildingID' => "C"
-        ]);
-        DB::table('room')->insert([
-            'roomID' => "203",
-            'buildingID' => "K1"
-        ]);
-        DB::table('room')->insert([
-            'roomID' => "401",
-            'buildingID' => "K1"
-        ]);
-        DB::table('room')->insert([
-            'roomID' => "901",
-            'buildingID' => "K1"
-        ]);
-        DB::table('room')->insert([
-            'roomID' => "902",
-            'buildingID' => "K1"
-        ]);
-        DB::table('room')->insert([
-            'roomID' => "903",
-            'buildingID' => "K1"
-        ]);
-        DB::table('room')->insert([
-            'roomID' => "904",
-            'buildingID' => "K1"
-        ]);
-        DB::table('room')->insert([
-            'roomID' => "905",
-            'buildingID' => "K1"
-        ]);
-        DB::table('room')->insert([
-            'roomID' => "906",
-            'buildingID' => "K1"
-        ]);
-        DB::table('room')->insert([
-            'roomID' => "506",
-            'buildingID' => "K1"
-        ]);
-        DB::table('room')->insert([
-            'roomID' => "507",
+            'roomID' => '100',
             'buildingID' => "K1"
         ]);
     }

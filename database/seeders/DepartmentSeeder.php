@@ -14,11 +14,5 @@ class DepartmentSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('device')->insert([
-            'deviceID' => "MC309",
-            'deviceName' => "Máy chiếu Viewsonic PA503SB",
-            'roomID' => "309",
-            'buildingID' => "C"
-        ]);
     }
 }
