@@ -35,8 +35,7 @@ class AdminController extends Controller
                 return view('admin.chat');
             }
         }
-        else{
-            if(Auth::user()->role == "admin"){
+        elseif(Auth::user()->role == "admin"){
                 $temp = explode(" ",Auth::user()->name);
                 $building = Building::find($temp[3]);
                 $roomArr = $building->rooms;
@@ -73,35 +72,37 @@ class AdminController extends Controller
                 $input = $request->post()?$request->input():['floor'=>'','day'=>''];
                 return view('admin.dashboard',compact('floorArr','room','time','schedule','input', 'roomArr'));
             }
-            // $bid = $building[0]['buildingID'];
-            // $roomID = Room::where('buildingID',$bid)->get();
-            // $floorArr = [];
-            // foreach($roomID as $key => $value){
-            //     array_push($floorArr,substr($value['roomID'],0,-2));
-            // }
-            // $floorArr = array_unique($floorArr);
-            // sort($floorArr);
-            // $room = [];
-            // foreach($roomID as $key => $value){
-            //     if(substr($value['roomID'],0,-2) == $floorArr[0]) array_push($room,$value['roomID']);
-            // }
-            // $today = Carbon::now()->addDay(1)->toDateString();
-            // $scheduleArr = Schedule::where(['day' => $today, 'buildingID' => $bid])->where('roomID','like', $floorArr[0].'%')->orderBy('timeStart','ASC')->get();
-            // for($i = 7; $i<= 18; $i++) {
-            //     $time[$i] = $i;
-            //     foreach ($room as $key => $value) {
-            //         $schedule[$i][$value] = [];
-            //     }
-            // }
+        else{
+            $buildingID = Building::all();
+            $bid = $buildingID[0]['buildingID'];
+            $roomArr = Room::where('buildingID',$bid)->get();
+            $floorArr = [];
+            foreach($roomArr as $key => $value){
+                array_push($floorArr,substr($value['roomID'],0,-2));
+            }
+            $floorArr = array_unique($floorArr);
+            sort($floorArr);
+            $room = [];
+            foreach($roomArr as $key => $value){
+                if(substr($value['roomID'],0,-2) == $floorArr[0]) array_push($room,$value['roomID']);
+            }
+            $today = Carbon::now()->addDay(1)->toDateString();
+            $scheduleArr = Schedule::where(['day' => $today, 'buildingID' => $bid])->where('roomID','like', $floorArr[0].'%')->orderBy('timeStart','ASC')->get();
+            for($i = 7; $i<= 18; $i++) {
+                $time[$i] = $i;
+                foreach ($room as $key => $value) {
+                    $schedule[$i][$value] = [];
+                }
+            }
             
-            // foreach ($scheduleArr as $key => $value) {
-            //     $schedule[$value['timeStart']][$value['roomID']] = $value;
-            //     for ($i=$value['timeStart']+1; $i <= $value['timeEnd'] ; $i++) { 
-            //         $schedule[$i][$value['roomID']] = "continue";
-            //     }
-            // }
-            // // die();
-            // return view('admin.dashboard',compact('buildingID','floorArr','room','time','schedule'));
+            foreach ($scheduleArr as $key => $value) {
+                $schedule[$value['timeStart']][$value['roomID']] = $value;
+                for ($i=$value['timeStart']+1; $i <= $value['timeEnd'] ; $i++) { 
+                    $schedule[$i][$value['roomID']] = "continue";
+                }
+            }
+            $input = $request->post()?$request->input():['floor'=>'','day'=>''];
+            return view('admin.dashboard',compact('buildingID','floorArr','room','time','schedule','input', 'roomArr'));
         }
     }
 
@@ -346,12 +347,12 @@ class AdminController extends Controller
     //Quản lý lịch học
     public function addSchedule(Request $request)
     {
-        $temp = explode(" ",Auth::user()->name);
         $data = $request->input();
         $data['buildingID'] = substr($data['roomID'],0,strpos($data['roomID'],"-"));
         $data['roomID'] = substr($data['roomID'],strpos($data['roomID'],"-")+1);
         $data['credit'] = $data['timeEnd']-$data['timeStart'];
-        $data['time'] = $data['timeStart']<12?'Sáng':'Chiều';
+        unset($data['listDevice']);
+        $data['listDevice'] = implode(",",$request->listDevice); 
         Schedule::create($data);
         return redirect()->back();
     }

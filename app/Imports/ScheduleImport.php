@@ -38,7 +38,6 @@ class ScheduleImport implements FromCollection, WithValidation
             'subjectID' => 'required',
             'subjectName' => 'required',
             'credit' => 'required',
-            'time' => 'required',
             'teacher' => 'required'
         ];
     }
@@ -75,8 +74,8 @@ class ScheduleImport implements FromCollection, WithValidation
                         'subjectID' => $value[0],
                         'subjectName' => $value[1],
                         'credit' => $value[2],
-                        'time' => $value[3],
-                        'teacher' => $value[5]
+                        'teacher' => $value[5],
+                        'user' => json_encode(['account' => '', 'user' => ''])
                     ];
                     $validator = Validator::make($data, $this->rules());
                     if ($validator->fails()) {
@@ -100,7 +99,6 @@ class ScheduleImport implements FromCollection, WithValidation
                             'subjectID' => $value[0],
                             'subjectName' => $value[1],
                             'credit' => $value[2],
-                            'time' => $value[3],
                             'teacher' => $value[5]
                         ];
                         $validator = Validator::make($data, $this->rules());
@@ -118,6 +116,7 @@ class ScheduleImport implements FromCollection, WithValidation
                 }
             }
         }
+        print_r(json_encode($this->errors));
         print_r(json_encode($dataJson));
         die();
     }

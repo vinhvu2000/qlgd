@@ -406,6 +406,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['isAdmin', 'auth', 'preventB
     Route::get('assign',[AdminController::class, 'assign'])->name('admin.assign');
     Route::post('dashboard',[AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::post('addSchedule',[AdminController::class, 'addSchedule'])->name('admin.addSchedule');
+    Route::post('cfCheckOut',[AdminController::class, 'cfCheckOut'])->name('admin.cfCheckOut');
 
     //Quản lý tài khoản
     Route::post('addUser',[AdminController::class, 'addUser'])->name('admin.addUser');
@@ -427,6 +428,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['isAdmin', 'auth', 'preventB
 Route::group(['prefix' => 'user', 'middleware' => ['isUser', 'auth', 'preventBackHistory']], function ()
 {
 
-    Route::get('dashboard',[AdminController::class, 'dashboard'])->name('user.dashboard');
-
+    Route::get('dashboard',[UserController::class, 'dashboard'])->name('user.dashboard');
+    Route::post('dashboard',[UserController::class, 'dashboard'])->name('user.dashboard');
+    Route::post('addSchedule',[UserController::class, 'addSchedule'])->name('user.addSchedule');
+    Route::post('checkOut',[UserController::class, 'checkOut'])->name('user.checkOut');
+    Route::post('checkIn',[UserController::class, 'checkIn'])->name('user.checkIn');
 });

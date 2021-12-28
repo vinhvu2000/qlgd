@@ -20,11 +20,13 @@ class CreateSchedulesTable extends Migration
             $table->string('timeEnd');
             $table->string('buildingID');
             $table->string('roomID');
-            $table->string('subjectID');
+            $table->string('subjectID')->nullable();
             $table->string('subjectName');
-            $table->string('credit');
-            $table->string('time');
+            $table->string('credit')->nullable();
             $table->string('teacher');
+            $table->integer('status')->default(0);
+            $table->string('user')->nullable();
+            $table->string('listDevice')->nullable();
 
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
