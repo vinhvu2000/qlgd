@@ -35,11 +35,6 @@
 								<i data-feather="users"></i><span>Quản lý người dùng</span>
 							</a>
 						</li>
-						<li class="sidebar-list">
-							<a class="sidebar-link sidebar-title {{Route::currentRouteName() == 'admin.assign' ? 'active' : '' }}" href="{{ route('admin.assign') }}">
-								<i data-feather="calendar"></i><span>Phân bố phòng học</span>
-							</a>
-						</li>
 						@endif
 					<li class="sidebar-list">
 						<a class="sidebar-link sidebar-title {{Route::currentRouteName() == 'admin.chat' ? 'active' : '' }}" href="{{ route('admin.chat') }}">
