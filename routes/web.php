@@ -408,7 +408,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['isAdmin', 'auth', 'preventB
     Route::post('addSchedule',[AdminController::class, 'addSchedule'])->name('admin.addSchedule');
     Route::post('accSchedule',[AdminController::class, 'accSchedule'])->name('admin.accSchedule');
     Route::post('changeBuild',[AdminController::class, 'changeBuild'])->name('admin.changeBuild');
-    // Route::post('cfCheckOut',[AdminController::class, 'cfCheckOut'])->name('admin.cfCheckOut');
+    Route::post('checkOut',[AdminController::class, 'checkOut'])->name('admin.checkOut');
     Route::post('checkIn',[AdminController::class, 'checkIn'])->name('admin.checkIn');
     
 

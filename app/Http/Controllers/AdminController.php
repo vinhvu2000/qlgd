@@ -75,8 +75,8 @@ class AdminController extends Controller
             }
         else{
             $buildingID = Building::all();
-            $bid = $buildingID[0]['buildingID'];
-            $roomArr = Room::where('buildingID',$bid)->get();
+            $bid = $request->post()?$request->buildingID:$buildingID[0]['buildingID'];
+            $roomArr = Room::where('buildingID',$bid)->where('roomID','<>','100')->get();
             $floorArr = [];
             foreach($roomArr as $key => $value){
                 array_push($floorArr,substr($value['roomID'],0,-2));
@@ -84,18 +84,18 @@ class AdminController extends Controller
             $floorArr = array_unique($floorArr);
             sort($floorArr);
             $room = [];
+            $tempFloor = $request->floor == NULL?$floorArr[0]:$request->floor;
             foreach($roomArr as $key => $value){
-                if(substr($value['roomID'],0,-2) == $floorArr[0]) array_push($room,$value['roomID']);
+                if(substr($value['roomID'],0,-2) == $tempFloor) array_push($room,$value['roomID']);
             }
-            $today = Carbon::now()->addDay(1)->toDateString();
-            $scheduleArr = Schedule::where(['day' => $today, 'buildingID' => $bid])->where('roomID','like', $floorArr[0].'%')->orderBy('timeStart','ASC')->get();
+            $today = $request->day == NULL?Carbon::now()->toDateString():$request->day;
+            $scheduleArr = Schedule::where(['day' => $today, 'buildingID' => $bid])->where('roomID','like', $tempFloor.'%')->orderBy('timeStart','ASC')->get();
             for($i = 7; $i<= 18; $i++) {
                 $time[$i] = $i;
                 foreach ($room as $key => $value) {
                     $schedule[$i][$value] = [];
                 }
             }
-            
             foreach ($scheduleArr as $key => $value) {
                 $schedule[$value['timeStart']][$value['roomID']] = $value;
                 $schedule[$value['timeStart']][$value['roomID']]->user = json_decode($value->user,true);
@@ -103,7 +103,7 @@ class AdminController extends Controller
                     $schedule[$i][$value['roomID']] = "continue";
                 }
             }
-            $input = $request->post()?$request->input():['floor'=>'','day'=>''];
+            $input = $request->post()?$request->input():['buildingID'=>'','floor'=>'','day'=>''];
             return view('admin.dashboard',compact('buildingID','floorArr','room','time','schedule','input', 'roomArr'));
         }
     }
@@ -351,11 +351,18 @@ class AdminController extends Controller
     public function addSchedule(Request $request)
     {
         $data = $request->input();
+        $data['listDevice'] = "KEY$request->roomID,MIC$request->roomID,REM$request->roomID";
+        if($request->listDevice != null){
+            foreach($request->listDevice as $key => $value){
+                $device = Device::where("deviceID","like",$value."%")->where("roomID","100")->first();
+                $data['listDevice'].=",$device->deviceID";
+            }
+        }
+        $data['status'] = 0;
         $data['buildingID'] = substr($data['roomID'],0,strpos($data['roomID'],"-"));
         $data['roomID'] = substr($data['roomID'],strpos($data['roomID'],"-")+1);
-        $data['credit'] = $data['timeEnd']-$data['timeStart'];
-        unset($data['listDevice']);
-        $data['listDevice'] = implode(",",$request->listDevice); 
+        unset($data['user']);
+        $data['user'] = json_encode(['account' => Auth::user()->name, 'user' => $request->user]);
         Schedule::create($data);
         return redirect()->back();
     }
@@ -375,6 +382,28 @@ class AdminController extends Controller
     
     public function changeBuild(Request $request)
     {
-        return $request->building;
+        $bid = $request->buildingID;
+        $roomArr = Room::where('buildingID',$bid)->where('roomID','<>','100')->get();
+        $floorArr = [];
+        foreach($roomArr as $key => $value){
+            array_push($floorArr,substr($value['roomID'],0,-2));
+        }
+        $floorArr = array_unique($floorArr);
+        sort($floorArr);
+        return json_encode($floorArr);
+    }
+
+    public function checkOut(Request $request)
+    {
+        $schedule = Schedule::find($request->id);
+        $schedule->status = 3;
+        $schedule->save();
+        return [$request->id];
+
+    }
+
+    public function updateSchedule(Request $request)
+    {
+        
     }
 }
