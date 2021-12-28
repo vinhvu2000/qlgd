@@ -392,7 +392,7 @@
 									</div>
 								</div>
 								<div class="modal-footer">
-									<button class="btn btn-danger" type="submit">Từ chối</button>
+									<button class="btn btn-danger" type="button">Từ chối</button>
 									<button class="btn btn-primary" type="submit">Đồng ý</button>
 									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
 								</div>
