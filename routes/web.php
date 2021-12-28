@@ -406,11 +406,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['isAdmin', 'auth', 'preventB
     Route::get('assign',[AdminController::class, 'assign'])->name('admin.assign');
     Route::post('dashboard',[AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::post('addSchedule',[AdminController::class, 'addSchedule'])->name('admin.addSchedule');
+    Route::post('updateSchedule',[AdminController::class, 'updateSchedule'])->name('admin.updateSchedule');
     Route::post('accSchedule',[AdminController::class, 'accSchedule'])->name('admin.accSchedule');
     Route::post('changeBuild',[AdminController::class, 'changeBuild'])->name('admin.changeBuild');
     Route::post('checkOut',[AdminController::class, 'checkOut'])->name('admin.checkOut');
     Route::post('checkIn',[AdminController::class, 'checkIn'])->name('admin.checkIn');
-    
 
     //Quản lý tài khoản
     Route::post('addUser',[AdminController::class, 'addUser'])->name('admin.addUser');

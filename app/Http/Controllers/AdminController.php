@@ -404,6 +404,25 @@ class AdminController extends Controller
 
     public function updateSchedule(Request $request)
     {
-        
+        $schedule = Schedule::find($request->id);
+        $schedule->day = $request->day;
+        $schedule->timeStart = $request->timeStart;
+        $schedule->timeEnd = $request->timeEnd;
+        $schedule->roomID = substr($request->roomID,strpos($request->roomID,"-")+1);
+        $schedule->buildingID = substr($request->roomID,0,strpos($request->roomID,"-"));
+        $schedule->teacher = $request->teacher;
+        $schedule->subjectID = $request->subjectID;
+        $schedule->subjectName = $request->subjectName;
+        $schedule->listDevice="KEY$request->roomID,MIC$request->roomID,REM$request->roomID";
+        if($request->listDevice != null){
+            foreach($request->listDevice as $key => $value){
+                $device = Device::where("deviceID","like",$value."%")->where("roomID","100")->first();
+                $schedule->listDevice.=",$device->deviceID";
+            }
+        }
+        $schedule->status = 2;
+        $schedule->user = json_encode(['account' => Auth::user()->name, 'user' => $request->user]);
+        $schedule->save();
+        return redirect()->back();
     }
 }
