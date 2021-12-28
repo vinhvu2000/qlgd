@@ -41,13 +41,6 @@
 							</a>
 						</li>
 						@endif
-					@else
-					<li class="sidebar-list">
-						<a class="sidebar-link sidebar-title {{Route::currentRouteName() == 'admin.room' ? 'active' : '' }}" href="{{ route('admin.room') }}">
-							<i data-feather="box"></i><span>Mượn phòng học</span>
-						</a>
-					</li>
-					@endif
 					<li class="sidebar-list">
 						<a class="sidebar-link sidebar-title {{Route::currentRouteName() == 'admin.chat' ? 'active' : '' }}" href="{{ route('admin.chat') }}">
 							<i data-feather="message-circle"></i><span>Hộp thư</span>
@@ -56,6 +49,16 @@
 					 <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav {{ Route::currentRouteName()=='admin.support' ? 'active' : '' }}" href="{{ route('admin.support') }}"><i data-feather="help-circle"> </i><span>Hỗ trợ</span></a></li>
 					 <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav {{ Route::currentRouteName()=='admin.settings' ? 'active' : '' }}" href="{{ route('admin.settings') }}"><i data-feather="settings"> </i><span>Cài đặt</span></a></li>
 					 <li class="sidebar-list">
+					@else
+					<li class="sidebar-list">
+						<a class="sidebar-link sidebar-title {{Route::currentRouteName() == 'user.chat' ? 'active' : '' }}" href="{{ route('user.chat') }}">
+							<i data-feather="message-circle"></i><span>Hộp thư</span>
+						</a>
+					</li>
+					 <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav {{ Route::currentRouteName()=='user.support' ? 'active' : '' }}" href="{{ route('user.support') }}"><i data-feather="help-circle"> </i><span>Hỗ trợ</span></a></li>
+					 <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav {{ Route::currentRouteName()=='user.settings' ? 'active' : '' }}" href="{{ route('user.settings') }}"><i data-feather="settings"> </i><span>Cài đặt</span></a></li>
+					 <li class="sidebar-list">
+					@endif
 						 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
 						@csrf
 					  </form>

@@ -396,9 +396,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['isAdmin', 'auth', 'preventB
     Route::get('user',[AdminController::class, 'user'])->name('admin.user')->middleware('isSuperAdmin');
 
     Route::get('dashboard',[AdminController::class, 'dashboard'])->name('admin.dashboard');
-    Route::get('chat',[AdminController::class, 'chat'])->name('admin.chat');
     Route::get('room',[AdminController::class, 'room'])->name('admin.room');
     Route::get('device',[AdminController::class, 'device'])->name('admin.device');
+    Route::get('chat',[AdminController::class, 'chat'])->name('admin.chat');
     Route::get('support',[AdminController::class, 'support'])->name('admin.support');
     Route::get('settings',[AdminController::class, 'settings'])->name('admin.settings');
 
@@ -406,7 +406,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['isAdmin', 'auth', 'preventB
     Route::get('assign',[AdminController::class, 'assign'])->name('admin.assign');
     Route::post('dashboard',[AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::post('addSchedule',[AdminController::class, 'addSchedule'])->name('admin.addSchedule');
-    Route::post('cfCheckOut',[AdminController::class, 'cfCheckOut'])->name('admin.cfCheckOut');
+    Route::post('accSchedule',[AdminController::class, 'accSchedule'])->name('admin.accSchedule');
+    Route::post('changeBuild',[AdminController::class, 'changeBuild'])->name('admin.changeBuild');
+    // Route::post('cfCheckOut',[AdminController::class, 'cfCheckOut'])->name('admin.cfCheckOut');
+    Route::post('checkIn',[AdminController::class, 'checkIn'])->name('admin.checkIn');
+    
 
     //Quản lý tài khoản
     Route::post('addUser',[AdminController::class, 'addUser'])->name('admin.addUser');
@@ -427,10 +431,16 @@ Route::group(['prefix' => 'admin', 'middleware' => ['isAdmin', 'auth', 'preventB
 
 Route::group(['prefix' => 'user', 'middleware' => ['isUser', 'auth', 'preventBackHistory']], function ()
 {
+    Route::get('chat',[UserController::class, 'chat'])->name('user.chat');
+    Route::get('support',[UserController::class, 'support'])->name('user.support');
+    Route::get('settings',[UserController::class, 'settings'])->name('user.settings');
 
     Route::get('dashboard',[UserController::class, 'dashboard'])->name('user.dashboard');
     Route::post('dashboard',[UserController::class, 'dashboard'])->name('user.dashboard');
     Route::post('addSchedule',[UserController::class, 'addSchedule'])->name('user.addSchedule');
+    Route::post('updateSchedule',[UserController::class, 'updateSchedule'])->name('user.updateSchedule');
     Route::post('checkOut',[UserController::class, 'checkOut'])->name('user.checkOut');
     Route::post('checkIn',[UserController::class, 'checkIn'])->name('user.checkIn');
+    Route::post('changeBuild',[UserController::class, 'changeBuild'])->name('user.changeBuild');
+
 });

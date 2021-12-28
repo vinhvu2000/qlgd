@@ -29,7 +29,7 @@
 					<span>Hiển thị thời khóa biểu của tòa nhà.</span>
 				</div>
 				<div class="card-body">
-					<form method="POST" action="{{route('admin.dashboard')}}" id="formAdd">
+					<form method="POST" action="{{route('admin.dashboard')}}">
 						@csrf
 						<div class="row">
 							@if (Auth::user()->role != 'admin')
@@ -67,7 +67,9 @@
 							
 							<div class="col-3 mb-3">
 								<button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+								@if(Auth::user()->role == 'admin')
 								<button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#roomModal"><i class="fa fa-plus"></i></button>
+								@endif
 							</div>
 						</div>
 					</form>
@@ -88,18 +90,41 @@
 									@if ($schedule[$hour][$value] == "continue")
 
 									@elseif ($schedule[$hour][$value] != null)
-										<td class="table-warning" rowspan="{{$schedule[$hour][$value]->timeEnd-$schedule[$hour][$value]->timeStart+1}}">
-											<a style="color:unset" href="#scheduleModal" data-bs-toggle="modal" data-bs-dismiss="modal" role="button">
-											<div>
+										<td 
+											@switch($schedule[$hour][$value]->status)
+											@case(2)
+											class="table-secondary"
+												@break
+											@case(0)
+											class="table-warning"
+												@break
+											@default
+											class="table-success" 
+											@endswitch
+											rowspan="{{$schedule[$hour][$value]->timeEnd-$schedule[$hour][$value]->timeStart+1}}">
+											<a style="color:unset" 
+											@switch($schedule[$hour][$value]->status)
+												@case(0)
+													href="#checkInModal" 
+													@break
+												@case(1)
+													href="#checkOutModal"
+													@break
+												@default
+													href="#scheduleModal"
+											@endswitch
+											 data-bs-toggle="modal" data-bs-dismiss="modal" role="button">
+											 <div>
 												<label>{{$schedule[$hour][$value]->subjectID}}</label><br>
 												<label>{{$schedule[$hour][$value]->subjectName}}</label><br>
 												<label>{{$schedule[$hour][$value]->teacher}}</label><br>
-												<label class="d-none">{{$schedule[$hour][$value]->day}}</label><br>
-												<label class="d-none">{{$schedule[$hour][$value]->timeStart}}</label><br>
-												<label class="d-none">{{$schedule[$hour][$value]->timeEnd}}</label><br>
-												<label class="d-none">{{$value}}</label><br>
-												<label class="d-none">{{$schedule[$hour][$value]->user}}</label><br>
-												<label class="d-none">{{$schedule[$hour][$value]->listDevice}}</label><br>
+												<label class="d-none">{{$schedule[$hour][$value]->day}}</label>
+												<label class="d-none">{{$schedule[$hour][$value]->timeStart}}</label>
+												<label class="d-none">{{$schedule[$hour][$value]->timeEnd}}</label>
+												<label class="d-none">{{$value}}</label>
+												<label class="d-none scheduleInfo">{{$schedule[$hour][$value]->id}}</label>
+												<label class="d-none">{{$schedule[$hour][$value]->user['user']}}</label>
+												<label class="d-none">{{$schedule[$hour][$value]->listDevice}}</label>
 											</div></a>
 										</td>
 									@else
@@ -216,87 +241,108 @@
 						</div>
 					</div>
 					</form>
-					<form action="{{route('admin.cfCheckOut')}}" method="POST">
-					@csrf
+					<form method="POST" id="formAccept">
 					<div class="modal fade modal-centered " id="scheduleModal" aria-hidden="true" aria-labelledby="roomModal" tabindex="-1">
 						<div class="modal-dialog fadeIn animated modal-dialog-centered">
 							<div class="modal-content">
 								<div class="modal-header">
-									<h5 class="modal-title">Xem thông tin lịch học</h5>
-							  		<button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
-						   		</div>
-						   		<div class="modal-body">
-							  		<form method="POST" class="modalForm">
-										<div class="mb-3">
-									 	<div class="input-group">
-										 <div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Ngày</span></div>
-										 <input class="form-control" name="day" id="dayModal" required type="date">
-									 </div>
-								 </div>
-								 <div class="row mb-3">
-									 <div class="col">
-										 <div class="input-group">
-											 <div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Từ</span></div>
-											 <input class="form-control"  name="timeStart" required type="text" id="timeStartModal" placeholder="VD:7">
-										 </div>
-									 </div>
-									 <div class="col">
-										 <div class="input-group">
-											 <div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Đến</span></div>
-											 <input class="form-control"  name="timeEnd" required type="text" id="timeEndModal" placeholder="VD:12">
-										 </div>
-									 </div>
-								 </div>
-								 <div class="mb-3">
-									 <div class="input-group">
-										 <div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Phòng học</span></div>
-										 <select name="roomID" id="roomIDModal" class="form-control btn-square">
-											 @foreach($roomArr as $key => $value)
-											 <option value="{{$value->buildingID.'-'.$value->roomID}}">{{$value->buildingID.'-'.$value->roomID}}</option>
-											 @endforeach
-										 </select>
-									 </div>
-								 </div>
-								 <div class="mb-3">
-									 <div class="input-group">
-										 <div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Giảng viên</span></div>
-										 <input class="form-control" name="teacher" value="" id="teacherModal" required type="text" placeholder="VD: Nguyễn Văn A">
-									 </div>
-								 </div>
-								 <div class="mb-3">
-									<div class="input-group">
-										<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Mã môn học</span></div>
-										<input class="form-control" name="subjectID" value="" id="subjectIDModal" required type="text" placeholder="VD: COMP 411">
+									<h5 class="modal-title">Thông tin mượn phòng học</h5>
+									<button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<div class="mb-3">
+										<input type="text" hidden name="id" id="idModal3" value="">
+										<div class="input-group">
+											<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Ngày</span></div>
+											<input class="form-control" name="day" id="dayModal3" type="date">
+										</div>
+									</div>
+									<div class="row mb-3">
+										<div class="col">
+											<div class="input-group">
+												<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Từ</span></div>
+												<input class="form-control" name="timeStart" type="text" id="timeStartModal3">
+											</div>
+										</div>
+										<div class="col">
+											<div class="input-group">
+												<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Đến</span></div>
+												<input class="form-control type="text" name="timeEnd" id="timeEndModal3">
+											</div>
+										</div>
+									</div>
+									<div class="mb-3">
+										<div class="input-group">
+											<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Phòng học</span></div>
+											<select name="roomID" class="form-control btn-square">
+												@foreach($roomArr as $key => $value)
+												<option value="{{$value->buildingID.'-'.$value->roomID}}">{{$value->buildingID.'-'.$value->roomID}}</option>
+												@endforeach
+											</select>
+										</div>
+									</div>
+									<div class="mb-3">
+										<div class="input-group">
+											<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Giảng viên</span></div>
+											<input class="form-control" id="teacherModal3" name="teacher" type="text">
+										</div>
+									</div>
+									<div class="mb-3">
+										<div class="input-group">
+											<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Mã môn học</span></div>
+											<input class="form-control" id="subjectIDModal3" name="subjectID" type="text">
+										</div>
+									</div>
+									<div class="mb-3">
+										<div class="input-group">
+											<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Tên môn học</span></div>
+											<input class="form-control" id="subjectNameModal3" name="subjectName" type="text">
+										</div>
+									</div>
+									<div class="mb-3">
+										<div class="input-group">
+											<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Người mượn</span></div>
+											<input class="form-control" id="userModal3" name="user" type="text">
+										</div>
+									</div>
+									<div class="row mb-3">
+										<div class="col-4">
+											<div class="form-check form-check-inline">
+												<input class="form-check-input" type="checkbox" id="inlineCheckbox11" disabled checked>
+												<label class="form-check-label" for="inlineCheckbox11">Chìa khóa</label>
+											</div>
+										</div>
+										<div class="col-4">
+											<div class="form-check form-check-inline">
+												<input class="form-check-input" type="checkbox" id="inlineCheckbox12" disabled checked>
+												<label class="form-check-label" for="inlineCheckbox12">Microphone</label>
+											</div>
+										</div>
+										<div class="col-4">
+											<div class="form-check form-check-inline">
+												<input class="form-check-input" type="checkbox" id="speModal3" value="SPE"  readonly name="listDevice[]">
+												<label class="form-check-label" for="speModal3">Loa</label>
+											</div>
+										</div>
+									</div>
+									<div class="row mb-3">
+										<div class="col-4">
+											<div class="form-check form-check-inline">
+												<input class="form-check-input" type="checkbox" id="cabModal3" value="CAB" readonly name="listDevice[]">
+												<label class="form-check-label" for="cabModal3">Cáp HDMI</label>
+											</div>
+										</div>
+										<div class="col-8">
+											<div class="form-check form-check-inline">
+												<input class="form-check-input" type="checkbox" id="inlineCheckbox13" disabled checked>
+												<label class="form-check-label" for="inlineCheckbox13">Điều khiển máy chiếu</label>
+											</div>
+										</div>
 									</div>
 								</div>
-								<div class="mb-3">
-									<div class="input-group">
-										<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Tên môn học</span></div>
-										<input class="form-control" name="subjectName" value="" id="subjectNameModal" required type="text" placeholder="VD: Công nghệ phần mềm">
-									</div>
-								</div>
-								<div class="mb-3">
-									<div class="input-group">
-										<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Người mượn</span></div>
-										<input class="form-control" name="user" value="" id="userModal" required type="text" placeholder="VD: Nguyễn Văn A">
-									</div>
-								</div>
-
-								{{-- <div class="form-check form-check-inline">
-									<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-									<label class="form-check-label" for="inlineCheckbox1">1</label>
-								  </div>
-								  <div class="form-check form-check-inline">
-									<input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
-									<label class="form-check-label" for="inlineCheckbox2">2</label>
-								  </div>
-								  <div class="form-check form-check-inline">
-									<input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3" disabled>
-									<label class="form-check-label" for="inlineCheckbox3">3 (disabled)</label>
-								  </div> --}}
-						   </div>
 								<div class="modal-footer">
-									<button type="submit" class="btn btn-primary">Trả phòng</button>
+									<button class="btn btn-primary" type="submit">Từ chối</button>
+									<button class="btn btn-primary" type="submit">Đồng ý</button>
 									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
 								</div>
 							</div>
@@ -376,15 +422,45 @@
 <script>
 	$("#scheduleModal").on("show.bs.modal", function (e) {
         const t = $(e.relatedTarget);
-		$("#subjectIDModal").val($(t).find("label:nth-child(1)").text());
-		$("#subjectNameModal").val($(t).find("label:nth-child(3)").text());
-		$("#teacherModal").val($(t).find("label:nth-child(5)").text());
-		$("#dayModal").val($(t).find("label:nth-child(7)").text());
-		$("#timeStartModal").val($(t).find("label:nth-child(9)").text());
-		$("#timeEndModal").val($(t).find("label:nth-child(11)").text());
-		var array = $(".media.profile-media .media-body span").text().split(" ");
-		$("#roomIDModal").val(array[3]+'-'+$(t).find("label:nth-child(13)").text());
-		$("#userModal").val($(t).find("label:nth-child(15)").text());
+		$("#subjectIDModal3").val($(t).find("label:nth-child(1)").text());
+		$("#subjectNameModal3").val($(t).find("label:nth-child(3)").text());
+		$("#teacherModal3").val($(t).find("label:nth-child(5)").text());
+		$("#dayModal3").val($(t).find("label:nth-child(7)").text());
+		$("#timeStartModal3").val($(t).find("label:nth-child(8)").text());
+		$("#timeEndModal3").val($(t).find("label:nth-child(9)").text());
+		$("#roomIDModal3").val($("#buildingID").val()+'-'+$(t).find("label:nth-child(10)").text());
+		$("#idModal3").val($(t).find("label:nth-child(11)").text());
+		$("#userModal3").val($(t).find("label:nth-child(12)").text());
+		var listDevice = $(t).find("label:nth-child(13)").text();
+		$("#speModal3").prop( "checked", listDevice.search("SPE") != -1 );
+		$("#cabModal3").prop( "checked", listDevice.search("CAB") != -1 );
+	})
+	$("#formAccept").submit(function (e) {
+		e.preventDefault();
+		$.ajax({
+			url: "{{route('admin.accSchedule')}}",
+			type: "POST",
+			data: $(this).serialize(),
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			},
+			success: function(data){
+				swal("Đồng ý mượn phòng thành công", {icon: "success",});
+				$("#scheduleModal").modal('hide');
+				$(".scheduleInfo").each(function () {
+					if($(this).text() == data[0]){
+						$(this).parent().parent().parent().removeClass("table-secondary");
+						$(this).parent().parent().parent().addClass("table-warning");
+						$(this).parent().parent().attr("href","#checkInModal")
+					}
+				})
+			},
+			error: function (data) {
+				var error = data.responseJSON;
+				console.log(error);
+				swal(Object.values(error)[0][0], {icon: "error",});
+			}
+		})
 	})
 </script>
 @endsection

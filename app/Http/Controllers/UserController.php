@@ -16,8 +16,8 @@ class UserController extends Controller
     public function dashboard(Request $request)
     {
         $buildingID = Building::all();
-        $bid = $buildingID[0]['buildingID'];
-        $roomArr = Room::where('buildingID',$bid)->get();
+        $bid = $request->post()?$request->buildingID:$buildingID[0]['buildingID'];
+        $roomArr = Room::where('buildingID',$bid)->where('roomID','<>','100')->get();
         $floorArr = [];
         foreach($roomArr as $key => $value){
             array_push($floorArr,substr($value['roomID'],0,-2));
@@ -37,7 +37,6 @@ class UserController extends Controller
                 $schedule[$i][$value] = [];
             }
         }
-        
         foreach ($scheduleArr as $key => $value) {
             $schedule[$value['timeStart']][$value['roomID']] = $value;
             $schedule[$value['timeStart']][$value['roomID']]->user = json_decode($value->user,true);
@@ -45,13 +44,21 @@ class UserController extends Controller
                 $schedule[$i][$value['roomID']] = "continue";
             }
         }
-        $input = $request->post()?$request->input():['floor'=>'','day'=>''];
+        $input = $request->post()?$request->input():['buildingID'=>'','floor'=>'','day'=>''];
         return view('user.dashboard',compact('buildingID','floorArr','room','time','schedule','input', 'roomArr'));
     }
 
     public function addSchedule(Request $request)
     {
         $data = $request->input();
+        $data['listDevice'] = "KEY$request->roomID,MIC$request->roomID,REM$request->roomID";
+        if($request->listDevice != null){
+            foreach($request->listDevice as $key => $value){
+                $device = Device::where("deviceID","like",$value."%")->where("roomID","100")->first();
+                $data['listDevice'].=",$device->deviceID";
+            }
+        }
+        $data['status'] = 2;
         $data['buildingID'] = substr($data['roomID'],0,strpos($data['roomID'],"-"));
         $data['roomID'] = substr($data['roomID'],strpos($data['roomID'],"-")+1);
         unset($data['user']);
@@ -74,11 +81,62 @@ class UserController extends Controller
                 $schedule->listDevice.=",$device->deviceID";
             }
         }
-        
         $schedule->status = 1;
         $schedule->user = json_encode(['account' => Auth::user()->name, 'user' => $request->user]);
         $schedule->save();
-        return [$request->id,$request->user];
+        return [$request->id,$request->user,$schedule->listDevice];
     }
     
+    public function updateSchedule(Request $request)
+    {
+        $schedule = Schedule::find($request->id);
+        $schedule->day = $request->day;
+        $schedule->timeStart = $request->timeStart;
+        $schedule->timeEnd = $request->timeEnd;
+        $schedule->roomID = substr($request->roomID,strpos($request->roomID,"-")+1);
+        $schedule->buildingID = substr($request->roomID,0,strpos($request->roomID,"-"));
+        $schedule->teacher = $request->teacher;
+        $schedule->subjectID = $request->subjectID;
+        $schedule->subjectName = $request->subjectName;
+        $schedule->listDevice="KEY$request->roomID,MIC$request->roomID,REM$request->roomID";
+        if($request->listDevice != null){
+            foreach($request->listDevice as $key => $value){
+                $device = Device::where("deviceID","like",$value."%")->where("roomID","100")->first();
+                $schedule->listDevice.=",$device->deviceID";
+            }
+        }
+        $schedule->status = 2;
+        $schedule->user = json_encode(['account' => Auth::user()->name, 'user' => $request->user]);
+        $schedule->save();
+        return redirect()->back();
+    }
+
+    public function changeBuild(Request $request)
+    {
+        $bid = $request->buildingID;
+        $roomArr = Room::where('buildingID',$bid)->where('roomID','<>','100')->get();
+        $floorArr = [];
+        foreach($roomArr as $key => $value){
+            array_push($floorArr,substr($value['roomID'],0,-2));
+        }
+        $floorArr = array_unique($floorArr);
+        sort($floorArr);
+        return json_encode($floorArr);
+    }
+    
+    public function chat()
+    {
+        return view('admin.chat');
+    }
+
+    public function support()
+    {
+        return view('admin.support');
+    }
+
+    public function settings()
+    {
+        return view('admin.settings');
+    }
+
 }

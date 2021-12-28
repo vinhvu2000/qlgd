@@ -65,6 +65,7 @@ class AdminController extends Controller
 
                 foreach ($scheduleArr as $key => $value) {
                     $schedule[$value['timeStart']][$value['roomID']] = $value;
+                    $schedule[$value['timeStart']][$value['roomID']]->user = json_decode($value->user,true);
                     for ($i=$value['timeStart']+1; $i <= $value['timeEnd'] ; $i++) { 
                         $schedule[$i][$value['roomID']] = "continue";
                     }
@@ -97,6 +98,7 @@ class AdminController extends Controller
             
             foreach ($scheduleArr as $key => $value) {
                 $schedule[$value['timeStart']][$value['roomID']] = $value;
+                $schedule[$value['timeStart']][$value['roomID']]->user = json_decode($value->user,true);
                 for ($i=$value['timeStart']+1; $i <= $value['timeEnd'] ; $i++) { 
                     $schedule[$i][$value['roomID']] = "continue";
                 }
@@ -163,11 +165,7 @@ class AdminController extends Controller
         return view('admin.device',compact('buildingID','roomID'));
     }
 
-    public function chat()
-    {
-        return view('admin.chat');
-    }
-
+    
     public function user(Request $request)
     {
         if($request->ajax()){
@@ -185,6 +183,11 @@ class AdminController extends Controller
             return view('admin.user');
         }
         return abort('404');
+    }
+
+    public function chat()
+    {
+        return view('admin.chat');
     }
 
     public function support()
@@ -355,5 +358,23 @@ class AdminController extends Controller
         $data['listDevice'] = implode(",",$request->listDevice); 
         Schedule::create($data);
         return redirect()->back();
+    }
+
+    public function accSchedule(Request $request)
+    {
+        $schedule = Schedule::find($request->id);
+        $schedule->status = 0;
+        $schedule->save();
+        return [$request->id];
+    }
+
+    public function checkIn(Request $requests)
+    {
+       
+    }
+    
+    public function changeBuild(Request $request)
+    {
+        return $request->building;
     }
 }
