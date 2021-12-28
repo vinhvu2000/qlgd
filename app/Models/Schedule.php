@@ -11,5 +11,5 @@ class Schedule extends Model
     protected $table = "schedules";
     public $incrementing = true;
     public $timestamps = true;
-    protected $fillable = ['day', 'timeStart', 'timeEnd', 'buildingID', 'roomID', 'subjectID', 'subjectName', 'credit', 'user', 'listDevice', 'teacher', 'status']; 
+    protected $fillable = ['id', 'day', 'timeStart', 'timeEnd', 'buildingID', 'roomID', 'subjectID', 'subjectName', 'credit', 'user', 'listDevice', 'teacher', 'status']; 
 }

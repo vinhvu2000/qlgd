@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Building;
+use App\Models\Device;
 use App\Models\Room;
 use App\Models\Schedule;
 use Carbon\Carbon;
@@ -66,7 +67,15 @@ class UserController extends Controller
 
     public function checkIn(Request $request)
     {
-        # code...
+        $schedule = Schedule::find($request->id);
+        foreach($request->listDevice as $key => $value){
+            $device = Device::where("device_id","like",$value)->where("roomID","Kho")->first();
+            $schedule->listDevice.=",$device->device_id";
+        }
+        $schedule->status = 1;
+        $schedule->user = json_encode(['account' => Auth::user()->name, 'user' => $request->user]);
+        $schedule->save();
+        return [$request->id,$request->user];
     }
     
 }

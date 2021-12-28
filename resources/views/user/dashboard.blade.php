@@ -107,13 +107,14 @@
 												<label>{{$schedule[$hour][$value]->subjectID}}</label><br>
 												<label>{{$schedule[$hour][$value]->subjectName}}</label><br>
 												<label>{{$schedule[$hour][$value]->teacher}}</label><br>
-												<label class="d-none">{{$schedule[$hour][$value]->day}}</label><br>
-												<label class="d-none">{{$schedule[$hour][$value]->timeStart}}</label><br>
-												<label class="d-none">{{$schedule[$hour][$value]->timeEnd}}</label><br>
-												<label class="d-none">{{$value}}</label><br>
+												<label class="d-none">{{$schedule[$hour][$value]->day}}</label>
+												<label class="d-none">{{$schedule[$hour][$value]->timeStart}}</label>
+												<label class="d-none">{{$schedule[$hour][$value]->timeEnd}}</label>
+												<label class="d-none">{{$value}}</label>
+												<label class="d-none scheduleInfo">{{$schedule[$hour][$value]->id}}</label>
 												@if($schedule[$hour][$value]->status == 1)
-												<label class="d-none">{{$schedule[$hour][$value]->user['user']}}</label><br>
-												<label class="d-none">{{$schedule[$hour][$value]->listDevice}}</label><br>
+												<label class="d-none">{{$schedule[$hour][$value]->user['user']}}</label>
+												<label class="d-none">{{$schedule[$hour][$value]->listDevice}}</label>
 												@endif
 											</div></a>
 										</td>
@@ -237,8 +238,7 @@
 							</div>
 						</div>
 					</form>
-					<form action="{{route('user.checkIn')}}" method="POST">
-						@csrf
+					<form method="POST" id="formCheckIn">
 						<div class="modal fade modal-centered " id="checkInModal" aria-hidden="true" aria-labelledby="roomModal" tabindex="-1">
 							<div class="modal-dialog fadeIn animated modal-dialog-centered">
 								<div class="modal-content">
@@ -247,73 +247,95 @@
 										<button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
 									</div>
 									<div class="modal-body">
-										<form method="POST" class="modalForm">
-											<div class="mb-3">
+										<input type="text" hidden name="id" id="idModal" value="">
+										<div class="mb-3">
 											<div class="input-group">
-											<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Ngày</span></div>
-											<input class="form-control" name="day" id="dayModal" readonly type="date">
-										</div>
-									</div>
-									<div class="row mb-3">
-										<div class="col">
-											<div class="input-group">
-												<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Từ</span></div>
-												<input class="form-control"  name="timeStart" readonly type="text" id="timeStartModal">
+												<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Ngày</span></div>
+												<input class="form-control" name="day" id="dayModal" readonly type="date">
 											</div>
 										</div>
-										<div class="col">
-											<div class="input-group">
-												<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Đến</span></div>
-												<input class="form-control"  name="timeEnd" readonly type="text" id="timeEndModal">
+										<div class="row mb-3">
+											<div class="col">
+												<div class="input-group">
+													<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Từ</span></div>
+													<input class="form-control"  name="timeStart" readonly type="text" id="timeStartModal">
+												</div>
+											</div>
+											<div class="col">
+												<div class="input-group">
+													<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Đến</span></div>
+													<input class="form-control"  name="timeEnd" readonly type="text" id="timeEndModal">
+												</div>
 											</div>
 										</div>
-									</div>
-									<div class="mb-3">
-										<div class="input-group">
-											<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Phòng học</span></div>
-											<input class="form-control" name="roomID" value="" id="roomIDModal" readonly type="text">
-											
+										<div class="mb-3">
+											<div class="input-group">
+												<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Phòng học</span></div>
+												<input class="form-control" name="roomID" value="" id="roomIDModal" readonly type="text">
+
+											</div>
 										</div>
-									</div>
-									<div class="mb-3">
-										<div class="input-group">
-											<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Giảng viên</span></div>
-											<input class="form-control" name="teacher" value="" id="teacherModal" readonly type="text">
+										<div class="mb-3">
+											<div class="input-group">
+												<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Giảng viên</span></div>
+												<input class="form-control" name="teacher" value="" id="teacherModal" readonly type="text">
+											</div>
 										</div>
-									</div>
-									<div class="mb-3">
-										<div class="input-group">
-											<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Mã môn học</span></div>
-											<input class="form-control" name="subjectID" value="" id="subjectIDModal" readonly type="text">
+										<div class="mb-3">
+											<div class="input-group">
+												<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Mã môn học</span></div>
+												<input class="form-control" name="subjectID" value="" id="subjectIDModal" readonly type="text">
+											</div>
 										</div>
-									</div>
-									<div class="mb-3">
-										<div class="input-group">
-											<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Tên môn học</span></div>
-											<input class="form-control" name="subjectName" value="" id="subjectNameModal" readonly type="text">
+										<div class="mb-3">
+											<div class="input-group">
+												<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Tên môn học</span></div>
+												<input class="form-control" name="subjectName" value="" id="subjectNameModal" readonly type="text">
+											</div>
 										</div>
-									</div>
-									<div class="mb-3">
-										<div class="input-group">
-											<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Người mượn</span></div>
-											<input class="form-control" name="user" value="" id="userModal" required type="text">
+										<div class="mb-3">
+											<div class="input-group">
+												<div class="input-group-prepend"><span class="input-group-text" id="inputGroupPrepend">Người mượn</span></div>
+												<input class="form-control" name="user" value="" id="userModal" required type="text">
+											</div>
 										</div>
-									</div>
-									<div class="form-check form-check-inline">
-										<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-										<label class="form-check-label" for="inlineCheckbox1">1</label>
-									</div>
-									<div class="form-check form-check-inline">
-										<input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
-										<label class="form-check-label" for="inlineCheckbox2">2</label>
-									</div>
-									<div class="form-check form-check-inline">
-										<input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3" disabled>
-										<label class="form-check-label" for="inlineCheckbox3">3 (disabled)</label>
-									</div>
-							</div>
+										<div class="row mb-3">
+											<div class="col-4">
+												<div class="form-check form-check-inline">
+													<input class="form-check-input" type="checkbox" id="inlineCheckbox1" disabled checked>
+													<label class="form-check-label" for="inlineCheckbox1">Chìa khóa</label>
+												</div>
+											</div>
+											<div class="col-4">
+												<div class="form-check form-check-inline">
+													<input class="form-check-input" type="checkbox" id="inlineCheckbox2" disabled checked>
+													<label class="form-check-label" for="inlineCheckbox2">Microphone</label>
+												</div>
+											</div>
+											<div class="col-4">
+												<div class="form-check form-check-inline">
+													<input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="SPE" name="listDevice">
+													<label class="form-check-label" for="inlineCheckbox3">Loa</label>
+												</div>
+											</div>
+										</div>
+										<div class="row mb-3">
+											<div class="col-4">
+												<div class="form-check form-check-inline">
+													<input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="CAB" name="listDevice">
+													<label class="form-check-label" for="inlineCheckbox4">Cáp HDMI</label>
+												</div>
+											</div>
+											<div class="col-8">
+												<div class="form-check form-check-inline">
+													<input class="form-check-input" type="checkbox" id="inlineCheckbox5" disabled checked value="MIC">
+													<label class="form-check-label" for="inlineCheckbox5">Điều khiển máy chiếu</label>
+												</div>
+											</div>
+										</div>
+									<div>
 									<div class="modal-footer">
-										<button type="submit" class="btn btn-primary">Trả phòng</button>
+										<button type="submit" class="btn btn-primary">Xác nhận</button>
 										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
 									</div>
 								</div>
@@ -484,11 +506,41 @@
 		$("#subjectNameModal").val($(t).find("label:nth-child(3)").text());
 		$("#teacherModal").val($(t).find("label:nth-child(5)").text());
 		$("#dayModal").val($(t).find("label:nth-child(7)").text());
-		$("#timeStartModal").val($(t).find("label:nth-child(9)").text());
-		$("#timeEndModal").val($(t).find("label:nth-child(11)").text());
+		$("#timeStartModal").val($(t).find("label:nth-child(8)").text());
+		$("#timeEndModal").val($(t).find("label:nth-child(9)").text());
 		var array = $(".media.profile-media .media-body span").text().split(" ");
-		$("#roomIDModal").val($("#buildingID").val()+'-'+$(t).find("label:nth-child(13)").text());
-		$("#userModal").val($(t).find("label:nth-child(15)").text());
+		$("#roomIDModal").val($("#buildingID").val()+'-'+$(t).find("label:nth-child(10)").text());
+		$("#idModal").val($(t).find("label:nth-child(11)").text());
+		// console.log($(t).find("label:nth-child(11)").text());
+		// $("#userModal").val($(t).find("label:nth-child(12)").text());
+	})
+	$("#formCheckIn").submit(function (e) {
+		e.preventDefault();
+		$.ajax({
+			url: "{{route('user.checkIn')}}",
+			type: "POST",
+			data: $(this).serialize(),
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			},
+			success: function(data){
+				swal("Xác nhận mở phòng học thành công", {icon: "success"});
+				$("#checkInModal").modal('hide');
+				$(".scheduleInfo").each(function () {
+					if($(this).text() == data[0]){
+						$(this).append("<label class='d-none scheduleInfo'>"+data[1]+"</label>")
+						$(this).parent().parent().parent().removeClass("table-warning");
+						$(this).parent().parent().parent().addClass("table-success");
+					}
+					
+				})
+			},
+			error: function () {
+				swal("Cập nhật phòng học thất bại", {
+				icon: "error",
+				});
+			}
+		})
 	})
 </script>
 @endsection
